@@ -1,0 +1,16 @@
+[
+    {
+        "firstName": "chmouel",
+        "lastName": "kessous",
+        "email": "chmouel2690@gmail.com",
+        "password": "helloworld!",
+        "phone": "+972556690763"
+    },
+    {
+        "firstName": "alon",
+        "lastName": "amrani",
+        "email": "alono@gmail.com",
+        "password": "helloworld!",
+        "phone": "+972556690763"
+    }
+]
