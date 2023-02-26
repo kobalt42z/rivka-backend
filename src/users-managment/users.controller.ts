@@ -6,6 +6,7 @@ import { JwtGuard, RolesGuard } from 'src/auth/guards';
 import { OnlyRole } from 'src/Auth/decorators/OnlyRole.decorator';
 import { Roles } from 'src/interfaces';
 import { AuthService } from 'src/auth/auth.service';
+import { ChangeRoleDto } from './dto/change-role.dto';
 
 @UseGuards(JwtGuard,RolesGuard)
 @OnlyRole(Roles.ADMIN)
@@ -26,16 +27,21 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('/:id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  remove(@Param('id') id: string ) {
+    return this.usersService.remove(id);
+  }
+
+  @Patch('role/:id')
+  changeRole(@Param('id')id:string , @Body() changeRoleDto:ChangeRoleDto){
+    return this.usersService.changeRole(id,changeRoleDto.role)
   }
 }
