@@ -3,7 +3,7 @@ import { CreateUserDto } from 'src/users-managment/dto/create-user.dto';
 import * as argon from "argon2"
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { Payload, PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { throwError } from 'rxjs';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -24,6 +24,7 @@ export class AuthService {
                 data: {
                     firstName: dto.firstName,
                     lastName: dto.lastName,
+                    dateOfBirth: dto.dateOfBirth,
                     email: dto.email,
                     hash: hash,
                     phone: dto.phone
@@ -76,7 +77,9 @@ export class AuthService {
         const decodeToken = await this.jwt.verifyAsync(token, { secret: this.config.get('JWT_TOKEN') })
         return decodeToken
     };
-
+    async validateMe(payload:userTokenPayload){
+        return {validation_status:'valid',payload:payload}
+    }
 }
 
 

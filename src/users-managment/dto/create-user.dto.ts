@@ -1,4 +1,4 @@
-import { isNotEmpty } from "class-validator";
+import { IsDate, IsDateString, isNotEmpty } from "class-validator";
 import { IsAlpha, IsAlphanumeric, isAlphanumeric, IsEmail, IsNotEmpty, IsPhoneNumber, IsString, isString, IsStrongPassword, maxLength, MaxLength, MinLength } from "class-validator";
 
 //the dto allow us to pass data and filter them using pipe  and validator class .
@@ -15,6 +15,11 @@ export class CreateUserDto {
     @IsAlpha()
     @MaxLength(10)
     lastName: string;
+
+    @IsNotEmpty()   
+    @IsDateString() //ISO 8601 format
+    dateOfBirth:Date;
+    
 
     @IsEmail()
     @IsNotEmpty()

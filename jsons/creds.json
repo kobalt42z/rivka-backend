@@ -2,6 +2,7 @@
     {
         "firstName": "chmouel",
         "lastName": "kessous",
+        "dateOfBirth":"2023-02-26T00:00:00.000Z",
         "email": "chmouel2690@gmail.com",
         "password": "helloworld!",
         "phone": "+972556690763"
@@ -9,8 +10,18 @@
     {
         "firstName": "alon",
         "lastName": "amrani",
+        "dateOfBirth":"2023-02-26T00:00:00.000Z",
         "email": "alono@gmail.com",
         "password": "helloworld!",
         "phone": "+972556690763"
     }
+,
+{
+    "firstName": "angelina",
+    "lastName": "markel",
+    "dateOfBirth":"2023-02-26T00:00:00.000Z",
+    "email": "angelinaxx@gmail.com",
+    "password": "helloworld!",
+    "phone": "+972523961244"
+}
 ]
