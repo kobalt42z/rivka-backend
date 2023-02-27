@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common/enums';
+import { HttpException } from '@nestjs/common/exceptions';
 import { CategoriesService } from 'src/categories/categories.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -27,17 +29,42 @@ export class ProductsService {
   }
   async createOneOrMany(createProductDtoArray: CreateProductDto[]) {
     try {
-
-      const products = await this.prisma.product.createMany({ data: createProductDtoArray });
+      
+      const products = await this.prisma.product.createMany({ data: createProductDtoArray});
       return { msg: "product created succesfully!", products }
     } catch (error) {
       throw error
     }
   }
-  // async joinCategoryByName(_id:string, JoinCategoryDto:String[]) {
-  //   const categories =JoinCategoryDto.map((id)=>({id}))
-  //     const targetCategory = await this.prisma.product.update({where:{id:_id},data:{categorys:{connect:{id:categories}}}})
-  // }
+
+  /*
+    * this function recive product_id and an array of category ids
+    * the function will map the ids provided and transform them into an array of objects that
+    * contains id 
+    * next the function will call prisma update to connect the product to categories using connect to relational field categoriy  
+  */
+  async joinCategoryByName(_id: string, JoinCategoryDto: JoinCategoryDto) {
+    console.log(JoinCategoryDto);
+
+    try {
+      const categories = JoinCategoryDto.categoryIds.map((id) => ({ id }))
+      const updatedCategory = await this.prisma.product.update({ where: { id: _id }, data: { categorys: { connect: categories } } })
+      return { action_status: "category linked sucessfuly !", updatedCategory }
+    } catch (error) {
+      throw error;
+    }
+
+  }
+
+  async findAllInCategory(categoryId: string) {
+    try {
+      if(!categoryId)throw new HttpException('BadRequest', HttpStatus.BAD_REQUEST)
+      const itemsInCategory = await this.prisma.category.findUniqueOrThrow({ where: { id: categoryId }, include: { products: true } })
+      return itemsInCategory;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async findAll() {
     try {
@@ -58,7 +85,7 @@ export class ProductsService {
 
   async findOne(_id: string) {
     try {
-      const product = await this.prisma.product.findUniqueOrThrow({ where: { id: _id } });
+      const product = await this.prisma.product.findUniqueOrThrow({ where: { id: _id }, include: { categorys: true } });
       return product;
     } catch (error) {
 

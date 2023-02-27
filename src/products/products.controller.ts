@@ -26,6 +26,12 @@ export class ProductsController {
     return this.productsService.getSlist();
   }
 
+  @Get('byCategory/:categoryId')
+  findAllInCategory(@Param('categoryId') categoryId:string) {
+    
+    return this.productsService.findAllInCategory(categoryId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(id);
@@ -35,10 +41,10 @@ export class ProductsController {
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.update(id, updateProductDto);
   }
-  // @Patch('addCategory/:id')
-  // joinCategory(@Param('id') id:string,@Body() categoryId:JoinCategoryDto[]){
-  //   return this.productsService.joinCategoryByName(id,categoryId)
-  // }
+  @Patch('addCategory/:productId') 
+  joinCategory(@Param('productId') ProductId:string,@Body() categoryIdDto:JoinCategoryDto){
+    return this.productsService.joinCategoryByName(ProductId,categoryIdDto)
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

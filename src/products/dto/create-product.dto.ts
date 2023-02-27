@@ -40,8 +40,6 @@ export class CreateProductDto {
     @Max(100000)
     supply: number
 
-    @IsOptional()
     @IsArray()
-    @MaxLength(200)
     categoryIds:string[]
 }
