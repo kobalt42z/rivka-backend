@@ -31,19 +31,10 @@ export class AuthService {
                 }
             })
             return { msg: "created successfully!", user }
+        } catch (err) {
+            throw err
         }
-        catch (error) {
 
-            if (error.code === 'P2002') {
-                throw new ForbiddenException(
-                    "unique restriction violation"
-                )
-            }
-            throw error.code
-
-
-
-        }
     }
 
     async login(dto: LoginDto) {
@@ -77,8 +68,8 @@ export class AuthService {
         const decodeToken = await this.jwt.verifyAsync(token, { secret: this.config.get('JWT_TOKEN') })
         return decodeToken
     };
-    async validateMe(payload:userTokenPayload){
-        return {validation_status:'valid',payload:payload}
+    async validateMe(payload: userTokenPayload) {
+        return { validation_status: 'valid', payload: payload }
     }
 }
 

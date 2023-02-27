@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Roles } from 'src/interfaces';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ChangeRoleDto } from './dto/change-role.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -14,15 +13,16 @@ export class UsersService {
 
   async findOne(_id: string) {
     try {
-      const user = await this.prisma.user.findUnique({
+      const user = await this.prisma.user.findUniqueOrThrow({
         where: {
           id: _id,
         }
       });
+      
       delete user.hash
       return user;
     } catch (error) {
-
+      
       throw error;
     }
   }

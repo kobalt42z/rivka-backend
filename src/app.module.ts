@@ -4,23 +4,33 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserAreaModule } from './user-area/user-area.module';
-import {APP_GUARD} from '@nestjs/core'
-import { RolesGuard } from './Auth/guards/role.guard';
+import { APP_FILTER } from '@nestjs/core/constants';
+import { HttpAdapterHost } from '@nestjs/core/helpers';
+import { PrismaClientExceptionFilter } from 'nestjs-prisma/dist/prisma-client-exception.filter';
+import { HttpStatus } from '@nestjs/common/enums';
 
 
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal : true,
+      isGlobal: true,
     }),
-  UsersModule,
-  AuthModule,
-  PrismaModule,
-  UserAreaModule,
+    UsersModule,
+    AuthModule,
+    PrismaModule,
+    UserAreaModule,
   ],
   controllers: [],
-  providers: [  ],
+  providers: [{
+    provide: APP_FILTER,
+    useFactory: ({ httpAdapter }: HttpAdapterHost) => {
+      return new PrismaClientExceptionFilter(httpAdapter,{
+        P2023:HttpStatus.BAD_REQUEST
+      });
+    },
+    inject: [HttpAdapterHost],
+  }],
 })
 export class AppModule {
 
