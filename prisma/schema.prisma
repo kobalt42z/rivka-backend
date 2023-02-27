@@ -46,7 +46,7 @@ model Product {
   imgUrl           String?
   supply           Int
   orders           Order?     @relation(fields: [orderId], references: [id])
-  orderId          String     @db.ObjectId
+  orderId          String?     @db.ObjectId
   category         Category[] @relation(fields: [categoryIds], references: [id])
   categoryIds      String[]   @db.ObjectId
 }

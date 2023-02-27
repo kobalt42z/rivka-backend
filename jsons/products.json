@@ -1,0 +1,29 @@
+[
+    {
+        "name": "creme pieds",
+         "brand": "nivea",
+         "description": "une creme redoutable pour les pieds",
+         "ShortDescription": "creme redoutable pieds",
+         "price_ils": 65,
+         "reduction_p": 0,
+         "supply": 40
+     },
+     {
+        "name": "cremea pieds",
+         "brand": "nivea",
+         "description": "une creme redoutable pour les pieds",
+         "ShortDescription": "creme redoutable pieds",
+         "price_ils": 65,
+         "reduction_p": 0,
+         "supply": 40
+     },
+     {
+        "name": "cremeaa pieds",
+         "brand": "nivea",
+         "description": "une creme redoutable pour les pieds",
+         "ShortDescription": "creme redoutable pieds",
+         "price_ils": 65,
+         "reduction_p": 0,
+         "supply": 40
+     }
+]
