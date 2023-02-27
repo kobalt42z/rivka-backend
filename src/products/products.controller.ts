@@ -3,6 +3,7 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CreateUserDto } from 'src/users-managment/dto/create-user.dto';
+import { JoinCategoryDto } from './dto/join-category.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -34,6 +35,10 @@ export class ProductsController {
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.update(id, updateProductDto);
   }
+  // @Patch('addCategory/:id')
+  // joinCategory(@Param('id') id:string,@Body() categoryId:JoinCategoryDto[]){
+  //   return this.productsService.joinCategoryByName(id,categoryId)
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

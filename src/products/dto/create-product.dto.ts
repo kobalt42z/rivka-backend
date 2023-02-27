@@ -1,4 +1,4 @@
-import { IsAlpha, IsAlphanumeric, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, Max, MaxLength, MIN, MinLength, } from "class-validator"
+import { IsAlpha, IsAlphanumeric, IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, Max, MaxLength, MIN, MinLength, } from "class-validator"
 
 export class CreateProductDto {
     @IsNotEmpty()
@@ -39,4 +39,9 @@ export class CreateProductDto {
     @IsNumber()
     @Max(100000)
     supply: number
+
+    @IsOptional()
+    @IsArray()
+    @MaxLength(200)
+    categoryIds:string[]
 }

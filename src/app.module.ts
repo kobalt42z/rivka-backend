@@ -9,6 +9,7 @@ import { HttpAdapterHost } from '@nestjs/core/helpers';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma/dist/prisma-client-exception.filter';
 import { HttpStatus } from '@nestjs/common/enums';
 import { ProductsModule } from './products/products.module';
+import { CategoriesModule } from './categories/categories.module';
 
 
 
@@ -22,6 +23,7 @@ import { ProductsModule } from './products/products.module';
     PrismaModule,
     UserAreaModule,
     ProductsModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [{

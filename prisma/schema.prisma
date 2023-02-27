@@ -47,7 +47,7 @@ model Product {
   supply           Int
   orders           Order?     @relation(fields: [orderId], references: [id])
   orderId          String?     @db.ObjectId
-  category         Category[] @relation(fields: [categoryIds], references: [id])
+  categorys         Category[] @relation(fields: [categoryIds], references: [id])
   categoryIds      String[]   @db.ObjectId
 }
 

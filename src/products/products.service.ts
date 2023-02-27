@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { CategoriesService } from 'src/categories/categories.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
+import { JoinCategoryDto } from './dto/join-category.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 
 
 @Injectable()
 export class ProductsService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly categoriesService: CategoriesService
+  ) { }
+
   async create(createProductDto: CreateProductDto) {
     try {
       const product = await this.prisma.product.create({
@@ -28,6 +34,10 @@ export class ProductsService {
       throw error
     }
   }
+  // async joinCategoryByName(_id:string, JoinCategoryDto:String[]) {
+  //   const categories =JoinCategoryDto.map((id)=>({id}))
+  //     const targetCategory = await this.prisma.product.update({where:{id:_id},data:{categorys:{connect:{id:categories}}}})
+  // }
 
   async findAll() {
     try {
@@ -39,7 +49,7 @@ export class ProductsService {
   }
   async getSlist() {
     try {
-      const slist = await this.prisma.product.findMany({select:{id:true,name:true}})
+      const slist = await this.prisma.product.findMany({ select: { id: true, name: true } })
       return slist
     } catch (error) {
       throw error
@@ -75,4 +85,5 @@ export class ProductsService {
       throw error;
     }
   }
+
 }
