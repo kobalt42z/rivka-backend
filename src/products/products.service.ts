@@ -27,6 +27,7 @@ export class ProductsService {
     }
 
   }
+  // !cannot create multiple link to categories , category must be updated with method joinCategoryByName
   async createOneOrMany(createProductDtoArray: CreateProductDto[]) {
     try {
       
@@ -43,12 +44,12 @@ export class ProductsService {
     * contains id 
     * next the function will call prisma update to connect the product to categories using connect to relational field categoriy  
   */
-  async joinCategoryByName(_id: string, JoinCategoryDto: JoinCategoryDto) {
+  async joinCategoryById(product_id: string, JoinCategoryIdDto: JoinCategoryDto) {
     console.log(JoinCategoryDto);
 
     try {
-      const categories = JoinCategoryDto.categoryIds.map((id) => ({ id }))
-      const updatedCategory = await this.prisma.product.update({ where: { id: _id }, data: { categorys: { connect: categories } } })
+      const categories = JoinCategoryIdDto.categoryIds.map((id) => ({ id }))
+      const updatedCategory = await this.prisma.product.update({ where: { id: product_id }, data: { categorys: { connect: categories } } })
       return { action_status: "category linked sucessfuly !", updatedCategory }
     } catch (error) {
       throw error;

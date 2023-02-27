@@ -43,7 +43,7 @@ export class ProductsController {
   }
   @Patch('addCategory/:productId') 
   joinCategory(@Param('productId') ProductId:string,@Body() categoryIdDto:JoinCategoryDto){
-    return this.productsService.joinCategoryByName(ProductId,categoryIdDto)
+    return this.productsService.joinCategoryById(ProductId,categoryIdDto)
   }
 
   @Delete(':id')
