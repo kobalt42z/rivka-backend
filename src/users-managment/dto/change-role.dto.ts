@@ -1,4 +1,4 @@
-import { IsRole } from "src/auth/decorators";
+import { IsRole } from "../../decorators";
 import { Roles } from "src/interfaces";
 
 export class ChangeRoleDto{

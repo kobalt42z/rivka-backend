@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard, RolesGuard } from 'src/auth/guards';
-import { OnlyRole } from 'src/Auth/decorators/OnlyRole.decorator';
+import { OnlyRole } from '../decorators';
 import { Roles } from 'src/interfaces';
 import { AuthService } from 'src/auth/auth.service';
 import { ChangeRoleDto } from './dto/change-role.dto';

@@ -1,8 +1,7 @@
 import { Controller, Get ,UseGuards} from '@nestjs/common';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { AuthGuard } from '@nestjs/passport';
-import { GetPayload } from 'src/Auth/decorators';
-import { OnlyRole } from 'src/Auth/decorators/OnlyRole.decorator';
+import { GetPayload ,OnlyRole} from '../decorators';
 import { JwtGuard } from 'src/Auth/guards/jwt.guard';
 import { RolesGuard } from 'src/Auth/guards/role.guard';
 import {  Roles, userTokenPayload } from 'src/interfaces';

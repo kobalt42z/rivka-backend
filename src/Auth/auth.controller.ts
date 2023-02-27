@@ -4,7 +4,7 @@ import { HttpException } from '@nestjs/common/exceptions';
 import { userTokenPayload } from 'src/interfaces';
 import { CreateUserDto } from 'src/users-managment/dto/create-user.dto';
 import { AuthService } from './auth.service';
-import { GetPayload } from './decorators';
+import { GetPayload } from '../decorators';
 import { LoginDto } from './dto/login.dto';
 import { JwtGuard } from './guards';
 

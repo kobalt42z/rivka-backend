@@ -8,6 +8,7 @@ import { APP_FILTER } from '@nestjs/core/constants';
 import { HttpAdapterHost } from '@nestjs/core/helpers';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma/dist/prisma-client-exception.filter';
 import { HttpStatus } from '@nestjs/common/enums';
+import { ProductsModule } from './products/products.module';
 
 
 
@@ -20,6 +21,7 @@ import { HttpStatus } from '@nestjs/common/enums';
     AuthModule,
     PrismaModule,
     UserAreaModule,
+    ProductsModule,
   ],
   controllers: [],
   providers: [{
