@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from '@nestjs/core';
 import { Role } from "@prisma/client";
-import { userTokenPayload } from "src/interfaces";
+import { Roles, userTokenPayload } from "src/interfaces";
 
 /*
 * this guard hook the route metadata 'role' and check :
@@ -26,6 +26,7 @@ export class RolesGuard implements CanActivate {
 
 
 
+    if (userPayload.role == Roles.ADMIN) return true;
     if (userPayload.role == requiredRole) return true;
     else return false;
 
