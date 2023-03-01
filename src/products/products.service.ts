@@ -44,7 +44,7 @@ export class ProductsService {
     * contains id 
     * next the function will call prisma update to connect the product to categories using connect to relational field categoriy  
   */
-  async joinCategoryById(product_id: string, JoinCategoryIdDto: JoinCategoryDto) {
+  async connectToCategories(product_id: string, JoinCategoryIdDto: JoinCategoryDto) {
     console.log(JoinCategoryDto);
 
     try {
