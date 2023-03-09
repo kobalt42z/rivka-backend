@@ -20,6 +20,7 @@ async function bootstrap() {
   app.useGlobalFilters( new PrismaClientExceptionFilter(httpAdapter,{
     P2023:HttpStatus.BAD_REQUEST
   }))
+  app.enableCors();
   await app.listen(3333);
 }
 bootstrap();

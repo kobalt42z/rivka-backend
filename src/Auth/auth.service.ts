@@ -46,7 +46,9 @@ export class AuthService {
             });
             const pwdMatch = await argon.verify(user.hash, dto.password)
             if (!pwdMatch) throw new ForbiddenException("incorret credentials")
-            return await this.signToken(user.id, user.role);
+            delete user.hash ;
+            const token = await this.signToken(user.id, user.role);
+            return {token: token ,user}
 
 
         } catch (error) {
@@ -57,12 +59,12 @@ export class AuthService {
     }
 
     //  * function that sign token 
-    async signToken(id: string, role: string): Promise<{ access_token: string }> {
+    async signToken(id: string, role: string): Promise< string > {
         const payload = { sub: id, role }
         const secret = this.config.get('JWT_SECRET')
 
 
-        return { access_token: await this.jwt.signAsync(payload, { secret: secret, expiresIn: '60m' }) }
+        return await this.jwt.signAsync(payload, { secret: secret, expiresIn: '60m' }) 
     }
     async validateToken(token: string): Promise<userTokenPayload> {
         const decodeToken = await this.jwt.verifyAsync(token, { secret: this.config.get('JWT_TOKEN') })
