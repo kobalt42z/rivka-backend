@@ -15,10 +15,15 @@ export class ProductsService {
     private readonly categoriesService: CategoriesService
   ) { }
 
-  async create(createProductDto: CreateProductDto) {
+  async createAndConnect(createProductDto: CreateProductDto) {
     try {
+      const categories = createProductDto.categoryIds.map((id) => ({ id }))
       const product = await this.prisma.product.create({
-        data: { ...createProductDto }
+        data: {
+          ...createProductDto,
+          categorys: { connect: categories }
+        }
+
       });
 
       return { msg: "product created succesfully!", product }
@@ -27,11 +32,12 @@ export class ProductsService {
     }
 
   }
+
   // !cannot create multiple link to categories , category must be updated with method joinCategoryByName
   async createOneOrMany(createProductDtoArray: CreateProductDto[]) {
     try {
-      
-      const products = await this.prisma.product.createMany({ data: createProductDtoArray});
+
+      const products = await this.prisma.product.createMany({ data: createProductDtoArray });
       return { msg: "product created succesfully!", products }
     } catch (error) {
       throw error
@@ -44,7 +50,7 @@ export class ProductsService {
     * contains id 
     * next the function will call prisma update to connect the product to categories using connect to relational field categoriy  
   */
-  async joinCategoryById(product_id: string, JoinCategoryIdDto: JoinCategoryDto) {
+  async connectToCategories(product_id: string, JoinCategoryIdDto: JoinCategoryDto) {
     console.log(JoinCategoryDto);
 
     try {
@@ -59,7 +65,7 @@ export class ProductsService {
 
   async findAllInCategory(categoryId: string) {
     try {
-      if(!categoryId)throw new HttpException('BadRequest', HttpStatus.BAD_REQUEST)
+      if (!categoryId) throw new HttpException('BadRequest', HttpStatus.BAD_REQUEST)
       const itemsInCategory = await this.prisma.category.findUniqueOrThrow({ where: { id: categoryId }, include: { products: true } })
       return itemsInCategory;
     } catch (error) {
@@ -89,7 +95,7 @@ export class ProductsService {
       const product = await this.prisma.product.findUniqueOrThrow({ where: { id: _id }, include: { categorys: true } });
       return product;
     } catch (error) {
-
+      throw error ;
     }
   }
 

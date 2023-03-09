@@ -45,7 +45,7 @@ model Product {
   reduction_p      Int?       @default(0)
   imgUrl           String?
   supply           Int
-  orders           Order?     @relation(fields: [orderId], references: [id])
+  order           Order?     @relation(fields: [orderId], references: [id])
   orderId          String?     @db.ObjectId
   categorys         Category[] @relation(fields: [categoryIds], references: [id])
   categoryIds      String[]   @db.ObjectId
