@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseArrayPipe ,UseGuards} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseArrayPipe ,UseGuards, Query} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -28,8 +28,8 @@ export class ProductsController {
     return this.productsService.createAndConnect(createProductDto);
   }
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  findAll(@Query('page') page:number ) {
+    return this.productsService.findAll(page);
   }
   @Get('slist')
   getSlist() {

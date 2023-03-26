@@ -73,10 +73,15 @@ export class ProductsService {
     }
   }
 
-  async findAll() {
+  async findAll(_skip:number) {
     try {
-      const products = await this.prisma.product.findMany({});
-      return products;
+      const products = await this.prisma.product.findMany({
+        take:10,
+        skip:_skip*10 || 0,
+
+      });
+      const count = await this.prisma.product.count();
+      return {products,count};
     } catch (error) {
       throw error
     }
