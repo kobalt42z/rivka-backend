@@ -40,7 +40,6 @@ model Product {
   name             String     @unique
   brand            String
   description      String
-  ShortDescription String
   price_ils        Int
   reduction_p      Int?       @default(0)
   imgUrl           String?

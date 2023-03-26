@@ -15,10 +15,7 @@ export class CreateProductDto {
     @MaxLength(100)
     description: string
 
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(50)
-    ShortDescription: string
+   
 
     @IsNotEmpty()
     @IsNumber()

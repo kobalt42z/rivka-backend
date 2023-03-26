@@ -13,11 +13,30 @@
          "brand": "nivea",
          "description": "une creme redoutable pour les pieds",
          "ShortDescription": "creme redoutable pieds",
-         "price_ils": 65,
+         "price_ils": 65,   
          "reduction_p": 0,
-         "supply": 40
+         "supply": 40,
+         "dictionairey":{
+            "hebrue":{
+                "name": "x"
+
+            },
+            "francais":{
+                "name": "x"
+            }
+         }
      },
      {
+        
+        "name&Description":{
+            "fr":{
+                "name":"crem"
+            },
+            "he":{
+                "na"
+            }
+            
+        }
         "name": "cremeaa pieds",
          "brand": "nivea",
          "description": "une creme redoutable pour les pieds",
