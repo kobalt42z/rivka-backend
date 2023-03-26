@@ -27,7 +27,9 @@ export class AuthService {
                     dateOfBirth: dto.dateOfBirth,
                     email: dto.email,
                     hash: hash,
-                    phone: dto.phone
+                    phone: dto.phone,
+                    acceptEmail:dto.acceptEmail?true:false,
+                    selectedLanguage:dto.selectedLanguage
                 }
             })
             return { msg: "created successfully!", user }

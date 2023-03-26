@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, isNotEmpty } from "class-validator";
+import { IsBoolean, IsDate, IsDateString, isNotEmpty, IsOptional } from "class-validator";
 import { IsAlpha, IsAlphanumeric, isAlphanumeric, IsEmail, IsNotEmpty, IsPhoneNumber, IsString, isString, IsStrongPassword, maxLength, MaxLength, MinLength } from "class-validator";
 
 //the dto allow us to pass data and filter them using pipe  and validator class .
@@ -38,4 +38,14 @@ export class CreateUserDto {
     @IsPhoneNumber() // ! must start with +00 region code 
     @MaxLength(20)
     phone: string;
+
+    @IsOptional()
+    @IsBoolean()
+    acceptEmail: boolean;
+
+    @IsNotEmpty()
+    @MaxLength(2)
+    @IsString()
+    selectedLanguage: string;
+
 }

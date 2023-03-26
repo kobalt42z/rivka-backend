@@ -11,18 +11,19 @@ datasource db {
 }
 
 model User {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  firstName   String
-  lastName    String
-  dateOfBirth DateTime
-  email       String   @unique
-  phone       String
-  acceptEmail Boolean
-  hash        String
-  role        Role     @default(USER)
-  orders      Order[]
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now()) @updatedAt
+  firstName        String
+  lastName         String
+  dateOfBirth      DateTime
+  email            String   @unique
+  phone            String
+  acceptEmail      Boolean
+  selectedLanguage String
+  hash             String
+  role             Role     @default(USER)
+  orders           Order[]
 }
 
 model Order {
@@ -46,9 +47,9 @@ model Product {
   reduction_p      Int?       @default(0)
   imgUrl           String?
   supply           Int
-  order           Order?     @relation(fields: [orderId], references: [id])
-  orderId          String?     @db.ObjectId
-  categorys         Category[] @relation(fields: [categoryIds], references: [id])
+  order            Order?     @relation(fields: [orderId], references: [id])
+  orderId          String?    @db.ObjectId
+  categorys        Category[] @relation(fields: [categoryIds], references: [id])
   categoryIds      String[]   @db.ObjectId
 }
 
