@@ -6,13 +6,11 @@ export class CreateUserDto {
 
     @IsNotEmpty()
     @IsString()
-    @IsAlpha()
     @MaxLength(10)
     firstName: string;
 
     @IsNotEmpty()
     @IsString()
-    @IsAlpha()
     @MaxLength(10)
     lastName: string;
 
