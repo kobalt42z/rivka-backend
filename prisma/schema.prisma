@@ -36,20 +36,37 @@ model Order {
 }
 
 model Product {
-  id               String     @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @default(now()) @updatedAt
-  name             String     @unique
-  brand            String
-  description      String
-  price_ils        Int
-  reduction_p      Int?       @default(0)
-  imgUrl           String?
-  supply           Int
-  order            Order?     @relation(fields: [orderId], references: [id])
-  orderId          String?    @db.ObjectId
-  categorys        Category[] @relation(fields: [categoryIds], references: [id])
-  categoryIds      String[]   @db.ObjectId
+  id            String                @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @default(now()) @updatedAt
+  name          String                @unique
+  brand         String
+  description   String
+  base_price    Int
+  selling_price Int
+  reduction_p   Int?                  @default(0)
+  supply        Int
+  imgUrl        String?
+  colors        String[]
+  sizes         String[]
+  curves        String[]
+  thickness     String[]
+  order         Order?                @relation(fields: [orderId], references: [id])
+  orderId       String?               @db.ObjectId
+  categorys     Category[]            @relation(fields: [categoryIds], references: [id])
+  categoryIds   String[]              @db.ObjectId
+  translations  productTranslations[]
+  active        Boolean
+}
+
+model productTranslations {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  languages   String
+  name        String
+  description String
+
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?  @db.ObjectId
 }
 
 model Category {
