@@ -11,7 +11,7 @@ export class LangueDto {
 
     @IsOptional()
     @IsString()
-    @MaxLength(100)
+    @MaxLength(30)
     name: string;
 
     @IsOptional()

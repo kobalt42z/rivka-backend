@@ -49,7 +49,9 @@ export class AuthService {
             const pwdMatch = await argon.verify(user.hash, dto.password)
             if (!pwdMatch) throw new ForbiddenException("incorret credentials")
 
-            // const subsetUser = (({ email, firstName, lastName, id, role }) => (({ email, firstName, lastName, id, role })))(user);
+            //  const subsetUser = (({ email, firstName, lastName, id, role }) => (({ email, firstName, lastName, id, role })))(user);
+
+
             delete user.hash
             const token = await this.signToken(user.id, user.role,[user.firstName, user.lastName]);
             return { token: token, user  }
