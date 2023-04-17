@@ -18,8 +18,8 @@ export class CategoriesService {
 
   async findAll() {
     try {
-      const categorys = await this.prisma.category.findMany({});
-      return { categorys }
+      const categories = await this.prisma.category.findMany({});
+      return { categories }
     } catch (error) {
       throw error
     }

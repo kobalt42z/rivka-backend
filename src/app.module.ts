@@ -11,6 +11,8 @@ import { HttpStatus } from '@nestjs/common/enums';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
+import { AwsService } from './aws/aws.service';
+import { AwsModule } from './aws/aws.module';
 
 
 
@@ -26,6 +28,7 @@ import { OrdersModule } from './orders/orders.module';
     ProductsModule,
     CategoriesModule,
     OrdersModule,
+    AwsModule,
   ],
   controllers: [],
   providers: [{
@@ -36,7 +39,7 @@ import { OrdersModule } from './orders/orders.module';
       });
     },
     inject: [HttpAdapterHost],
-  }],
+  }, AwsService],
 })
 export class AppModule {
 

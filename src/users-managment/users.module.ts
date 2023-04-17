@@ -4,10 +4,11 @@ import { UsersController } from './users.controller';
 import { AuthService } from 'src/auth/auth.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { JwtService } from '@nestjs/jwt';
+import { AwsModule } from 'src/aws/aws.module';
 
 
 @Module({
-  imports:[AuthModule],
+  imports:[AuthModule,AwsModule],
   controllers: [UsersController],
   providers: [UsersService,AuthService,JwtService]
 })

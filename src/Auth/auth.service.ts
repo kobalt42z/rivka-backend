@@ -8,13 +8,16 @@ import { throwError } from 'rxjs';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { userTokenPayload } from 'src/interfaces';
+import { AwsService } from 'src/aws/aws.service';
+import { AssumeRoleCommandOutput } from '@aws-sdk/client-sts';
 
 @Injectable()
 export class AuthService {
     constructor(
         private jwt: JwtService,
         private prisma: PrismaService,
-        private config: ConfigService
+        private config: ConfigService,
+        private Aws: AwsService
     ) { }
 
     async register(dto: CreateUserDto) {
@@ -28,8 +31,8 @@ export class AuthService {
                     email: dto.email,
                     hash: hash,
                     phone: dto.phone,
-                    acceptEmail:dto.acceptEmail?true:false,
-                    selectedLanguage:dto.selectedLanguage
+                    acceptEmail: dto.acceptEmail ? true : false,
+                    selectedLanguage: dto.selectedLanguage
                 }
             })
             return { msg: "created successfully!", user }
@@ -53,8 +56,16 @@ export class AuthService {
 
 
             delete user.hash
-            const token = await this.signToken(user.id, user.role,[user.firstName, user.lastName]);
-            return { token: token, user  }
+            const token = await this.signToken(user.id, user.role, [user.firstName, user.lastName]);
+            if (user.role === "ADMIN") {
+                const AWS_accessData: AssumeRoleCommandOutput = await this.Aws.getTemporalAccess()
+                
+               
+
+                return { token: token, user, aws_access: AWS_accessData.Credentials }
+
+            }
+            return { token: token, user }
 
 
         } catch (error) {
@@ -65,8 +76,8 @@ export class AuthService {
     }
 
     //  * function that sign token 
-    async signToken(id: string, role: string ,fullName:string[]): Promise<string> {
-        const payload = { sub: id, role ,firstName:fullName[0], lastName:fullName[1]}
+    async signToken(id: string, role: string, fullName: string[]): Promise<string> {
+        const payload = { sub: id, role, firstName: fullName[0], lastName: fullName[1] }
         const secret = this.config.get('JWT_SECRET')
 
 

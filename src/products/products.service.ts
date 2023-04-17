@@ -20,17 +20,15 @@ export class ProductsService {
   async createAndConnect(createProductDto: CreateProductDto) {
     try {
       const categories = createProductDto.categoryIds.map((id) => ({ id }));
+
       const translatArr = [
         {
-          languages: createProductDto.translations.fr.language,
-          description: createProductDto.translations.fr.description,
-          name: createProductDto.translations.fr.name
+          ...createProductDto.translations.fr
         },
         {
-          languages: createProductDto.translations.en.language,
-          description: createProductDto.translations.en.description,
-          name: createProductDto.translations.en.name
-        }
+          ...createProductDto.translations.en
+        },
+
       ];
 
       const product = await this.prisma.product.create({
@@ -40,7 +38,7 @@ export class ProductsService {
             connect: categories
           },
           translations: {
-            create:translatArr
+            create: translatArr
           }
         }
       });
@@ -97,9 +95,9 @@ export class ProductsService {
       const products = await this.prisma.product.findMany({
         take: 10,
         skip: _skip * 10 || 0,
-        include:{
-          translations:true,
-          categorys:{select:{name:true}}
+        include: {
+          translations: true,
+          categorys: { select: { name: true } }
         }
 
       });

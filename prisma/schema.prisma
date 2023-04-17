@@ -61,9 +61,9 @@ model Product {
 
 model productTranslations {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
-  languages   String
-  name        String
-  description String
+  language    String
+  name        String?
+  description String?
 
   Product   Product? @relation(fields: [productId], references: [id])
   productId String?  @db.ObjectId
