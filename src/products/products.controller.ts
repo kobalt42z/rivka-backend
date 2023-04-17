@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseArrayPipe ,UseGuards, Query} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseArrayPipe ,UseGuards, Query, UseInterceptors,UploadedFile,ParseFilePipe,MaxFileSizeValidator, FileTypeValidator} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -7,6 +7,7 @@ import { JoinCategoryDto } from './dto/join-category.dto';
 import { OnlyRole } from 'src/decorators';
 import { Roles } from 'src/interfaces';
 import { JwtGuard, RolesGuard } from 'src/auth/guards';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseGuards(JwtGuard, RolesGuard)
 @OnlyRole(Roles.ADMIN)
@@ -24,7 +25,19 @@ export class ProductsController {
 
 
   @Post()
-  createAndConnect(@Body() createProductDto: CreateProductDto){
+  @UseInterceptors(FileInterceptor('image'))
+  createAndConnect(
+    @Body() createProductDto: CreateProductDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators:[
+          // Checks if a given file's size is less than the provided value (measured in bytes)
+          new MaxFileSizeValidator({maxSize:16*1000*1000}),
+          new FileTypeValidator({fileType:"image/*"})
+        ]
+      })
+    ) file:Express.Multer.File
+  ){
     return this.productsService.createAndConnect(createProductDto);
   }
   @Get()
