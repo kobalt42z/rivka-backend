@@ -8,17 +8,22 @@ import { JoinCategoryDto } from './dto/join-category.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { TranslationDto } from './dto/create-product.dto'
 import { create } from 'domain';
+import { AwsService } from 'src/aws/aws.service';
+import { PutObjectAclCommandOutput, PutObjectCommandOutput } from '@aws-sdk/client-s3';
 
 
 @Injectable()
 export class ProductsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly categoriesService: CategoriesService
+    private readonly categoriesService: CategoriesService,
+    private readonly aws :AwsService
   ) { }
 
-  async createAndConnect(createProductDto: CreateProductDto) {
+  async createAndConnect(createProductDto: CreateProductDto, file:Express.Multer.File) {
     try {
+      const uploadedFile:PutObjectCommandOutput = await this.aws.uploadToS3(file)
+      const r = uploadedFile.
       const categories = createProductDto.categoryIds.map((id) => ({ id }));
 
       const translatArr = [
@@ -28,7 +33,6 @@ export class ProductsService {
         {
           ...createProductDto.translations.en
         },
-
       ];
 
       const product = await this.prisma.product.create({
