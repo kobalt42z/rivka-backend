@@ -1,0 +1,11 @@
+{
+    "name": "creme piedss",
+     "brand": "nivea",
+     "description": "une creme redoutable pour les pieds",
+     "base_price":100,
+     "selling_price":160,
+     "categoryIds":[],
+     "active":true,
+     "reduction_p": 0,
+     "supply": 40
+ }

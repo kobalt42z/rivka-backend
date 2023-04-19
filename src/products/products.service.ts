@@ -22,8 +22,8 @@ export class ProductsService {
 
   async createAndConnect(createProductDto: CreateProductDto, file:Express.Multer.File) {
     try {
-      const uploadedFile:PutObjectCommandOutput = await this.aws.uploadToS3(file)
-      const r = uploadedFile.
+      // const uploadedFile:PutObjectCommandOutput = await this.aws.uploadToS3(file)
+      // const r = uploadedFile.
       const categories = createProductDto.categoryIds.map((id) => ({ id }));
 
       const translatArr = [

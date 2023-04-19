@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseArrayPipe ,UseGuards, Query, UseInterceptors,UploadedFile,ParseFilePipe,MaxFileSizeValidator, FileTypeValidator} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseArrayPipe, UseGuards, Query, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, UsePipes, UploadedFiles, ValidationPipe, ParseFloatPipe } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -7,13 +7,16 @@ import { JoinCategoryDto } from './dto/join-category.dto';
 import { OnlyRole } from 'src/decorators';
 import { Roles } from 'src/interfaces';
 import { JwtGuard, RolesGuard } from 'src/auth/guards';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
+import { ProductReqValidator } from './pipes/ProductData.pipe';
+import { parseJsonPipe } from './pipes/ParseJson.pipe';
+import { VALIDATION_CONFIG } from 'src/GlobalConst';
 
 @UseGuards(JwtGuard, RolesGuard)
 @OnlyRole(Roles.ADMIN)
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) { }
 
 
   // @Post()
@@ -23,25 +26,30 @@ export class ProductsController {
   //   return this.productsService.createOneOrMany(createProductDtos);
   // }
 
+  // new ProductReqValidator({
+  //   maxImageSize: 1 * 1000 * 1000,
+  //   allowedImageTypes: ['image/png', 'image/jpeg']
+  // })
 
   @Post()
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'image', maxCount: 1 },
+    // { name: 'product_description', maxCount: 1 }
+  ]))
   createAndConnect(
-    @Body() createProductDto: CreateProductDto,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators:[
-          // Checks if a given file's size is less than the provided value (measured in bytes)
-          new MaxFileSizeValidator({maxSize:16*1000*1000}),
-          new FileTypeValidator({fileType:"image/*"})
-        ]
-      })
-    ) file:Express.Multer.File
-  ){
-    return this.productsService.createAndConnect(createProductDto);
+    @UploadedFiles(new ProductReqValidator({
+      allowedImageTypes: ['image/png', 'image/jpeg'],
+      maxImageSize: 16 * 1000 * 1000
+    }))
+    file: Express.Multer.File,
+    @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) body: CreateProductDto) {
+    return this.productsService.createAndConnect(body, file);
+    // return { body, file }
+
   }
+
   @Get()
-  findAll(@Query('page') page:number ) {
+  findAll(@Query('page') page: number) {
     return this.productsService.findAll(page);
   }
   @Get('slist')
@@ -50,8 +58,8 @@ export class ProductsController {
   }
 
   @Get('byCategory/:categoryId')
-  findAllInCategory(@Param('categoryId') categoryId:string) {
-    
+  findAllInCategory(@Param('categoryId') categoryId: string) {
+
     return this.productsService.findAllInCategory(categoryId);
   }
 

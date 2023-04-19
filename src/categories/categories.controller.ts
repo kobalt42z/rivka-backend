@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete ,UseGuards} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete ,UseGuards, UsePipes, ValidationPipe} from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -6,7 +6,9 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { JwtGuard, RolesGuard } from 'src/auth/guards';
 import { OnlyRole } from '../decorators';
 import { Roles } from 'src/interfaces';
+import { VALIDATION_CONFIG } from 'src/GlobalConst';
 
+@UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) { }

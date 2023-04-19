@@ -1,4 +1,4 @@
-import { Controller, Get ,UseGuards,Post,Body} from '@nestjs/common';
+import { Controller, Get ,UseGuards,Post,Body, ValidationPipe, UsePipes} from '@nestjs/common';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { AuthGuard } from '@nestjs/passport';
 import { GetPayload ,OnlyRole} from '../decorators';
@@ -9,9 +9,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { UserAreaService } from './user-area.service';
 import { OrdersService } from 'src/orders/orders.service';
 import { SelfOrderDto } from 'src/orders/dto/selfOrder.dto';
+import { VALIDATION_CONFIG } from 'src/GlobalConst';
 
 @UseGuards(JwtGuard, RolesGuard)
 @OnlyRole(Roles.USER)
+@UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('userArea')
 export class UserAreaController {
     constructor(private readonly userAreaService:UserAreaService, private readonly ordersService:OrdersService) { }

@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ValidationPipe, UsePipes } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { JwtGuard, RolesGuard } from 'src/auth/guards';
 import { GetPayload, OnlyRole } from '../decorators';
 import { Roles, userTokenPayload } from 'src/interfaces';
+import { VALIDATION_CONFIG } from 'src/GlobalConst';
 
 @UseGuards(JwtGuard, RolesGuard)
 @OnlyRole(Roles.ADMIN)
+@UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) { }
