@@ -6,7 +6,7 @@ import { CreateUserDto } from '../users-managment/dto/create-user.dto';
 import { JoinCategoryDto } from './dto/join-category.dto';
 import { OnlyRole } from '../decorators';
 import { Roles } from '../interfaces';
-import { JwtGuard, RolesGuard } from '../auth/guards';
+import { JwtGuard, RolesGuard } from '../Auth/guards';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { ProductReqValidator } from './pipes/ProductData.pipe';
 import { parseJsonPipe } from './pipes/ParseJson.pipe';
