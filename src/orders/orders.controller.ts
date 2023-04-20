@@ -2,10 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Validatio
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { JwtGuard, RolesGuard } from 'src/auth/guards';
+import { JwtGuard, RolesGuard } from '../auth/guards';
 import { GetPayload, OnlyRole } from '../decorators';
-import { Roles, userTokenPayload } from 'src/interfaces';
-import { VALIDATION_CONFIG } from 'src/GlobalConst';
+import { Roles, userTokenPayload } from '../interfaces';
+import { VALIDATION_CONFIG } from '../GlobalConst';
 
 @UseGuards(JwtGuard, RolesGuard)
 @OnlyRole(Roles.ADMIN)

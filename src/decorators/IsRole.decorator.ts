@@ -1,5 +1,5 @@
 import { registerDecorator, ValidationOptions, ValidationArguments } from 'class-validator';
-import { Roles } from 'src/interfaces';
+import { Roles } from '../interfaces';
 
 export function IsRole(ValidationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {

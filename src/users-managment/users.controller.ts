@@ -2,12 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete ,UseGuards, Query, Va
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtGuard, RolesGuard } from 'src/auth/guards';
+import { JwtGuard, RolesGuard } from '../auth/guards';
 import { OnlyRole } from '../decorators';
-import { Roles } from 'src/interfaces';
-import { AuthService } from 'src/auth/auth.service';
+import { Roles } from '../interfaces';
+import { AuthService } from '../auth/auth.service';
 import { ChangeRoleDto } from './dto/change-role.dto';
-import { VALIDATION_CONFIG } from 'src/GlobalConst';
+import { VALIDATION_CONFIG } from '../GlobalConst';
 
 @UseGuards(JwtGuard,RolesGuard)
 @OnlyRole(Roles.ADMIN)

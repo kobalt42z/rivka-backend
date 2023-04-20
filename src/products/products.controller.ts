@@ -2,15 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseArrayPipe, UseG
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { CreateUserDto } from 'src/users-managment/dto/create-user.dto';
+import { CreateUserDto } from '../users-managment/dto/create-user.dto';
 import { JoinCategoryDto } from './dto/join-category.dto';
-import { OnlyRole } from 'src/decorators';
-import { Roles } from 'src/interfaces';
-import { JwtGuard, RolesGuard } from 'src/auth/guards';
+import { OnlyRole } from '../decorators';
+import { Roles } from '../interfaces';
+import { JwtGuard, RolesGuard } from '../auth/guards';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { ProductReqValidator } from './pipes/ProductData.pipe';
 import { parseJsonPipe } from './pipes/ParseJson.pipe';
-import { VALIDATION_CONFIG } from 'src/GlobalConst';
+import { VALIDATION_CONFIG } from '../GlobalConst';
 
 @UseGuards(JwtGuard, RolesGuard)
 @OnlyRole(Roles.ADMIN)

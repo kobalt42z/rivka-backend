@@ -1,14 +1,14 @@
 import { Injectable, UploadedFile } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
-import { CategoriesService } from 'src/categories/categories.service';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { CategoriesService } from '../categories/categories.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { JoinCategoryDto } from './dto/join-category.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { TranslationDto } from './dto/create-product.dto'
 import { create } from 'domain';
-import { AwsService } from 'src/aws/aws.service';
+import { AwsService } from '../aws/aws.service';
 import { PutObjectAclCommandOutput, PutObjectCommandOutput } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 

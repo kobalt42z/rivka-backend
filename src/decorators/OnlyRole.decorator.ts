@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
-import { Roles } from 'src/interfaces';
+import { Roles } from '../interfaces';
 
 /*
     * use this decorator to add the role in route metadata

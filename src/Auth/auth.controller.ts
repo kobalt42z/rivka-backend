@@ -1,8 +1,8 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
-import { userTokenPayload } from 'src/interfaces';
-import { CreateUserDto } from 'src/users-managment/dto/create-user.dto';
+import { userTokenPayload } from '../interfaces';
+import { CreateUserDto } from '../users-managment/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { GetPayload } from '../decorators';
 import { LoginDto } from './dto/login.dto';

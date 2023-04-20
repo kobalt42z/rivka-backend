@@ -2,14 +2,14 @@ import { Controller, Get ,UseGuards,Post,Body, ValidationPipe, UsePipes} from '@
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { AuthGuard } from '@nestjs/passport';
 import { GetPayload ,OnlyRole} from '../decorators';
-import { JwtGuard } from 'src/Auth/guards/jwt.guard';
-import { RolesGuard } from 'src/Auth/guards/role.guard';
-import {  Roles, userTokenPayload } from 'src/interfaces';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { JwtGuard } from '../Auth/guards/jwt.guard';
+import { RolesGuard } from '../Auth/guards/role.guard';
+import {  Roles, userTokenPayload } from '../interfaces';
+import { PrismaService } from '../prisma/prisma.service';
 import { UserAreaService } from './user-area.service';
-import { OrdersService } from 'src/orders/orders.service';
-import { SelfOrderDto } from 'src/orders/dto/selfOrder.dto';
-import { VALIDATION_CONFIG } from 'src/GlobalConst';
+import { OrdersService } from '../orders/orders.service';
+import { SelfOrderDto } from '../orders/dto/selfOrder.dto';
+import { VALIDATION_CONFIG } from '../GlobalConst';
 
 @UseGuards(JwtGuard, RolesGuard)
 @OnlyRole(Roles.USER)
