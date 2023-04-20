@@ -3,7 +3,7 @@ import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
-import { JwtGuard, RolesGuard } from '../auth/guards';
+import { JwtGuard, RolesGuard } from '../Auth/guards';
 import { OnlyRole } from '../decorators';
 import { Roles } from '../interfaces';
 import { VALIDATION_CONFIG } from '../GlobalConst';
