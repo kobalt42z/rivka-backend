@@ -25,7 +25,7 @@ async function bootstrap() {
   app.enableCors({
     origin: "https://rivkanakache.netlify.app",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
+    preflightContinue: true,
     optionsSuccessStatus: 204
   });
   await app.listen(3333);
