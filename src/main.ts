@@ -23,7 +23,7 @@ async function bootstrap() {
     P2023:HttpStatus.BAD_REQUEST
   }))
   app.enableCors({
-    origin: true,
+    origin: '*',
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     preflightContinue: false,
     optionsSuccessStatus: 204
