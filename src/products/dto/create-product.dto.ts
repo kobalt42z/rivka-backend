@@ -67,10 +67,10 @@ export class CreateProductDto {
     @Max(100000)
     supply: number
 
-    @IsUrl() // !expermiental
-    @IsOptional()
-    @MaxLength(200)
-    imgUrl?: string
+    // @IsUrl() // !expermiental
+    // @IsOptional()
+    // @MaxLength(200)
+    // imgUrl?: string
 
 
     @IsArray()

@@ -17,7 +17,7 @@ interface FileValidationOptions {
 export class ProductReqValidator implements PipeTransform {
   constructor(private validationOption: FileValidationOptions) { }
   transform({ image: [target] }: ProductReqValidatorInput, metadata: ArgumentMetadata) {
-
+    
     if (!(target.size <= this.validationOption.maxImageSize 
       && this.validationOption.allowedImageTypes.includes(target.mimetype)))
       throw new BadRequestException('invalid image !');

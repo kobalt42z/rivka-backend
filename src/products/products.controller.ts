@@ -43,7 +43,9 @@ export class ProductsController {
     }))
     file: Express.Multer.File,
     @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) body: CreateProductDto) {
+      console.log({ body, file });
     return this.productsService.createAndConnect(body, file);
+    
     // return { body, file }
 
   }

@@ -58,11 +58,11 @@ export class AuthService {
             delete user.hash
             const token = await this.signToken(user.id, user.role, [user.firstName, user.lastName]);
             if (user.role === "ADMIN") {
-                const AWS_accessData: AssumeRoleCommandOutput = await this.Aws.getTemporalAccess()
+               
                 
                
 
-                return { token: token, user, aws_access: AWS_accessData.Credentials }
+                return { token: token, user,  }
 
             }
             return { token: token, user }

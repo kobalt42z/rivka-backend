@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UploadedFile } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
 import { CategoriesService } from 'src/categories/categories.service';
@@ -10,6 +10,7 @@ import { TranslationDto } from './dto/create-product.dto'
 import { create } from 'domain';
 import { AwsService } from 'src/aws/aws.service';
 import { PutObjectAclCommandOutput, PutObjectCommandOutput } from '@aws-sdk/client-s3';
+import { ConfigService } from '@nestjs/config';
 
 
 @Injectable()
@@ -17,13 +18,16 @@ export class ProductsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly categoriesService: CategoriesService,
-    private readonly aws :AwsService
+    private readonly aws: AwsService,
+    private readonly config: ConfigService
   ) { }
 
-  async createAndConnect(createProductDto: CreateProductDto, file:Express.Multer.File) {
+  async createAndConnect(createProductDto: CreateProductDto, file: Express.Multer.File) {
     try {
-      // const uploadedFile:PutObjectCommandOutput = await this.aws.uploadToS3(file)
-      // const r = uploadedFile.
+      const uploadedFileName = await this.aws.uploadToS3(file)
+      console.log(uploadedFileName);
+      const imgURL = this.config.get("BASE_BUCKET_URL") + uploadedFileName
+
       const categories = createProductDto.categoryIds.map((id) => ({ id }));
 
       const translatArr = [
@@ -37,7 +41,7 @@ export class ProductsService {
 
       const product = await this.prisma.product.create({
         data: {
-          ...createProductDto,
+          ...createProductDto, imgUrl: imgURL,
           categorys: {
             connect: categories
           },
@@ -164,6 +168,14 @@ export class ProductsService {
   async remove(_id: string) {
     try {
       const remove = await this.prisma.product.delete({ where: { id: _id } });
+      const path = remove.imgUrl
+      const lastIndex = path.lastIndexOf("/"); // Find the last index of "\"
+      const UUID = path.slice(lastIndex + 1);
+      console.log(UUID);
+      
+     const res = await this.aws.DeletFromS3(UUID);
+     console.log(res);
+     
       return { action_status: `sucessfuly deleted :${_id}`, remove };
     } catch (error) {
       throw error;
