@@ -22,7 +22,12 @@ async function bootstrap() {
   app.useGlobalFilters( new PrismaClientExceptionFilter(httpAdapter,{
     P2023:HttpStatus.BAD_REQUEST
   }))
-  app.enableCors({origin:'https://rivkanakache.netlify.app'});
+  app.enableCors({
+    origin: "https://rivkanakache.netlify.app",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+  });
   await app.listen(3333);
 }
 bootstrap();
