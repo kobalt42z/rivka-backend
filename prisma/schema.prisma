@@ -60,12 +60,12 @@ model Product {
 }
 
 model productTranslations {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
   language    String
   name        String?
   description String?
 
-  Product   Product? @relation(fields: [productId], references: [id])
+  Product   Product? @relation(fields: [productId], references: [id],onDelete:Cascade)
   productId String?  @db.ObjectId
 }
 
@@ -73,6 +73,7 @@ model Category {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
+  imgUrl      String    
   name        String    @unique
   description String
   products    Product[] @relation(fields: [productsIds], references: [id])

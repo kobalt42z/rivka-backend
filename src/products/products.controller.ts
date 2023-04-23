@@ -8,7 +8,7 @@ import { OnlyRole } from '../decorators';
 import { Roles } from '../interfaces';
 import { JwtGuard, RolesGuard } from '../Auth/guards';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
-import { ProductReqValidator } from './pipes/ProductData.pipe';
+import { ImgAndJsonValidator } from './pipes/ProductData.pipe';
 import { parseJsonPipe } from './pipes/ParseJson.pipe';
 import { VALIDATION_CONFIG } from '../GlobalConst';
 
@@ -37,8 +37,8 @@ export class ProductsController {
     // { name: 'product_description', maxCount: 1 }
   ]))
   createAndConnect(
-    @UploadedFiles(new ProductReqValidator({
-      allowedImageTypes: ['image/png', 'image/jpeg'],
+    @UploadedFiles(new ImgAndJsonValidator({
+      allowedImageTypes: ['image/png', 'image/jpg'],
       maxImageSize: 16 * 1000 * 1000
     }))
     file: Express.Multer.File,

@@ -24,9 +24,9 @@ export class ProductsService {
 
   async createAndConnect(createProductDto: CreateProductDto, file: Express.Multer.File) {
     try {
-      const uploadedFileName = await this.aws.uploadToS3(file)
-      console.log(uploadedFileName);
-      const imgURL = this.config.get("BASE_BUCKET_URL") + uploadedFileName
+      const imgURL = await this.aws.uploadToS3(file,'products')
+   
+     
 
       const categories = createProductDto.categoryIds.map((id) => ({ id }));
 
@@ -160,23 +160,23 @@ export class ProductsService {
         }
       });
       return { action_status: "updated successfully !", updatedProduct };
-    } catch (error) {
+    } catch (error) { 
       throw error;
     }
   }
 
   async remove(_id: string) {
     try {
-      const remove = await this.prisma.product.delete({ where: { id: _id } });
-      const path = remove.imgUrl
-      const lastIndex = path.lastIndexOf("/"); // Find the last index of "\"
-      const UUID = path.slice(lastIndex + 1);
-      console.log(UUID);
+      const relatedCategory = await this.prisma.product.update({where:{id:_id},data:{categorys:{set:[]}}})
+      const ToDelete = await this.prisma.product.delete({ where: { id: _id } });
+      const ImgUrl= new URL(ToDelete.imgUrl) 
+
+      // console.log(ImgUrl.pathname.substring(1));
       
-     const res = await this.aws.DeletFromS3(UUID);
-     console.log(res);
+     const res = await this.aws.DeletFromS3(ImgUrl.pathname.substring(1));
+    //  console.log(res);
      
-      return { action_status: `sucessfuly deleted :${_id}`, remove };
+      return { action_status: `sucessfuly deleted :${_id}`, ToDelete };
     } catch (error) {
       throw error;
     }

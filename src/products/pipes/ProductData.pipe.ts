@@ -14,9 +14,11 @@ interface FileValidationOptions {
 
 
 @Injectable()
-export class ProductReqValidator implements PipeTransform {
+export class ImgAndJsonValidator implements PipeTransform {
   constructor(private validationOption: FileValidationOptions) { }
-  transform({ image: [target] }: ProductReqValidatorInput, metadata: ArgumentMetadata) {
+  transform(value: ProductReqValidatorInput, metadata: ArgumentMetadata) {
+    if(!value.image)throw new BadRequestException('image field is missing');
+    const { image:[target]} = value
     
     if (!(target.size <= this.validationOption.maxImageSize 
       && this.validationOption.allowedImageTypes.includes(target.mimetype)))

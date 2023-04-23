@@ -38,12 +38,13 @@ export class AwsService {
     }
 
 
-    async uploadToS3(file: Express.Multer.File) {
+    async uploadToS3(file: Express.Multer.File, Folder?: string) {
         const date = new Date();
         const UUIDIMAGE = uuidv4()
+        const path = `${Folder || ''}/${UUIDIMAGE}`
         const params: PutObjectCommandInput = {
             Bucket: this.Config.get('BUCKET_NAME'),
-            Key: UUIDIMAGE,
+            Key: path,
             Body: file.buffer,
             ContentType: file.mimetype,
         };
@@ -53,7 +54,8 @@ export class AwsService {
         try {
             const response = await this.S3.send(command)
 
-            return UUIDIMAGE;
+            const imgURL: string = this.Config.get("BASE_BUCKET_URL") + path
+            return imgURL;
         } catch (error) {
             throw error;
         }
@@ -61,14 +63,14 @@ export class AwsService {
 
     async DeletFromS3(key: string) {
         try {
-            const params:DeleteObjectCommandInput  = {
+            const params: DeleteObjectCommandInput = {
                 Bucket: this.Config.get('BUCKET_NAME'),
                 Key: key,
 
             };
             const command = new DeleteObjectCommand(params);
             const response = await this.S3.send(command);
-            return response 
+            return response
         } catch (error) {
             throw error
         }

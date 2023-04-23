@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete ,UseGuards, UsePipes, ValidationPipe} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UsePipes, ValidationPipe, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -7,8 +7,11 @@ import { JwtGuard, RolesGuard } from '../Auth/guards';
 import { OnlyRole } from '../decorators';
 import { Roles } from '../interfaces';
 import { VALIDATION_CONFIG } from '../GlobalConst';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { ImgAndJsonValidator } from 'src/products/pipes/ProductData.pipe';
+import { parseJsonPipe } from 'src/products/pipes/ParseJson.pipe';
 
-@UsePipes(new ValidationPipe(VALIDATION_CONFIG))
+// @UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) { }
@@ -17,8 +20,16 @@ export class CategoriesController {
   @UseGuards(JwtGuard, RolesGuard)
   @OnlyRole(Roles.ADMIN)
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'image', maxCount: 1 }
+  ]))
+  create(@UploadedFiles(new ImgAndJsonValidator({
+    allowedImageTypes:['image/jpg', 'image/png'],
+    maxImageSize:16*1000*1000
+  })) file:Express.Multer.File ,
+   @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) createCategoryDto: CreateCategoryDto) {
+    return this.categoriesService.create(file,createCategoryDto);
+    
   }
 
   @Get()
@@ -42,17 +53,17 @@ export class CategoriesController {
     return this.categoriesService.findOne(id);
   }
 
-  
-@UseGuards(JwtGuard,RolesGuard)
-@OnlyRole(Roles.ADMIN)
+
+  @UseGuards(JwtGuard, RolesGuard)
+  @OnlyRole(Roles.ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
     return this.categoriesService.update(id, updateCategoryDto);
   }
 
-  
-@UseGuards(JwtGuard,RolesGuard)
-@OnlyRole(Roles.ADMIN)
+
+  @UseGuards(JwtGuard, RolesGuard)
+  @OnlyRole(Roles.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.categoriesService.remove(id);

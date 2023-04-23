@@ -4,7 +4,7 @@ import { IsAlpha, IsAlphanumeric, IsArray, IsNotEmpty, IsNumber, IsOptional, IsS
 
 export class LangueDto {
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsString()
     @MaxLength(2)
     language: string
@@ -93,7 +93,7 @@ export class CreateProductDto {
     thickness: string[]
 
     @ValidateNested()
-    @IsOptional()
+    @IsNotEmpty()
     @Type(() => TranslationDto)
     translations: TranslationDto
 
