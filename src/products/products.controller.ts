@@ -43,8 +43,9 @@ export class ProductsController {
     }))
     file: Express.Multer.File,
     @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) body: CreateProductDto) {
-      console.log({ body, file });
+    console.log({ body, file });
     return this.productsService.createAndConnect(body, file);
+
     
     // return { body, file }
 
@@ -71,8 +72,22 @@ export class ProductsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(id, updateProductDto);
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'image', maxCount: 1 },
+    // { name: 'product_description', maxCount: 1 }
+  ]))
+  update(@Param('id') id: string, @UploadedFiles(
+    new ImgAndJsonValidator({
+      allowedImageTypes: ['image/png', 'image/jpg'],
+      maxImageSize: 16 * 1000 * 1000, 
+      imageOptional:true
+    })
+  ) file: Express.Multer.File, @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) updateProductDto: UpdateProductDto) {
+    
+    id = id.replace('','')
+    
+    return this.productsService.update(id, updateProductDto,file);
+    // return { id, updateProductDto ,file}  
   }
 
 

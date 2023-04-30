@@ -133,18 +133,20 @@ export class ProductsService {
     }
   }
 
-  async update(_id: string, updateProductDto: UpdateProductDto) {
+  async update(_id: string, updateProductDto: UpdateProductDto, file? :Express.Multer.File) {
     try {
       let categories: { id: string }[] | never;
       if (updateProductDto.categoryIds) {
         categories = updateProductDto.categoryIds.map((id) => ({ id }));
       }
       const transArr = [
-        updateProductDto.translations.fr,
-        updateProductDto.translations.en,
+        updateProductDto?.translations?.fr,
+        updateProductDto?.translations?.en,
       ]
+      console.log(transArr);
+      console.log(_id,typeof _id);
       const updatedProduct = await this.prisma.product.update({
-        where: { id: _id },
+        where: { id: "6449298d9f15569fcfb1df4a" },
         data: {
           ...updateProductDto,
           translations: {
