@@ -12,8 +12,7 @@ import { ImgAndJsonValidator } from './pipes/ProductData.pipe';
 import { parseJsonPipe } from './pipes/ParseJson.pipe';
 import { VALIDATION_CONFIG } from '../GlobalConst';
 
-@UseGuards(JwtGuard, RolesGuard)
-@OnlyRole(Roles.ADMIN)
+
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
@@ -30,7 +29,8 @@ export class ProductsController {
   //   maxImageSize: 1 * 1000 * 1000,
   //   allowedImageTypes: ['image/png', 'image/jpeg']
   // })
-
+  @UseGuards(JwtGuard, RolesGuard)
+  @OnlyRole(Roles.ADMIN)
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'image', maxCount: 1 },
@@ -46,31 +46,45 @@ export class ProductsController {
     console.log({ body, file });
     return this.productsService.createAndConnect(body, file);
 
-    
+
     // return { body, file }
 
   }
 
   @Get()
   findAll(@Query('page') page: number) {
+
     return this.productsService.findAll(page);
   }
   @Get('slist')
   getSlist() {
     return this.productsService.getSlist();
   }
+  @Get('shopCount')
+  getShopCount(){
+    return this.productsService.getShopCount();
+  }
+
+  @Get('byCategory/')
+  findAllWithProducts(@Query('page') pages: number, @Query('category') categoryTarget: number) {
+
+    return this.productsService.findAllWithProducts(pages, categoryTarget);
+  }
 
   @Get('byCategory/:categoryId')
   findAllInCategory(@Param('categoryId') categoryId: string) {
-
+    
     return this.productsService.findAllInCategory(categoryId);
   }
 
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(id);
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
+  @OnlyRole(Roles.ADMIN)
   @Patch(':id')
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'image', maxCount: 1 },
@@ -79,19 +93,20 @@ export class ProductsController {
   update(@Param('id') id: string, @UploadedFiles(
     new ImgAndJsonValidator({
       allowedImageTypes: ['image/png', 'image/jpg'],
-      maxImageSize: 16 * 1000 * 1000, 
-      imageOptional:true
+      maxImageSize: 16 * 1000 * 1000,
+      imageOptional: true
     })
   ) file: Express.Multer.File, @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) updateProductDto: UpdateProductDto) {
-    
-    id = id.replace('','')
-    
-    return this.productsService.update(id, updateProductDto,file);
+
+    id = id.replace('', '')
+
+    return this.productsService.update(id, updateProductDto, file);
     // return { id, updateProductDto ,file}  
   }
 
 
-
+  @UseGuards(JwtGuard, RolesGuard)
+  @OnlyRole(Roles.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.productsService.remove(id);

@@ -24,9 +24,9 @@ export class ProductsService {
 
   async createAndConnect(createProductDto: CreateProductDto, file: Express.Multer.File) {
     try {
-      const imgURL = await this.aws.uploadToS3(file,'products')
-   
-     
+      const imgURL = await this.aws.uploadToS3(file, 'products')
+
+
 
       const categories = createProductDto.categoryIds.map((id) => ({ id }));
 
@@ -91,10 +91,39 @@ export class ProductsService {
   async findAllInCategory(categoryId: string) {
     try {
       if (!categoryId) throw new HttpException('BadRequest', HttpStatus.BAD_REQUEST)
-      const itemsInCategory = await this.prisma.category.findUniqueOrThrow({ where: { id: categoryId }, include: { products: true } })
+      const itemsInCategory = await this.prisma.category.findUniqueOrThrow({ where: { id: categoryId }, include: { products: true, _count: { select: { products: true } } } })
+
+
       return itemsInCategory;
     } catch (error) {
       throw error;
+    }
+  }
+
+  async findAllWithProducts(skipProducts: number, skipCategories: number) {
+    try {
+
+      const categoryAndItems = await this.prisma.category.findMany({
+        include: {
+          products: true,
+        },
+        take: 1,
+        skip: skipCategories * 1 || 0,
+      })
+
+
+      return { categoryAndItems };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getShopCount() {
+    try {
+      const categoryCount = await this.prisma.category.count()
+      return categoryCount
+    } catch (error) {
+      throw error
     }
   }
 
@@ -133,7 +162,7 @@ export class ProductsService {
     }
   }
 
-  async update(_id: string, updateProductDto: UpdateProductDto, file? :Express.Multer.File) {
+  async update(_id: string, updateProductDto: UpdateProductDto, file?: Express.Multer.File) {
     try {
       let categories: { id: string }[] | never;
       if (updateProductDto.categoryIds) {
@@ -144,9 +173,9 @@ export class ProductsService {
         updateProductDto?.translations?.en,
       ]
       console.log(transArr);
-      console.log(_id,typeof _id);
+      console.log(_id, typeof _id);
       const updatedProduct = await this.prisma.product.update({
-        where: { id: "6449298d9f15569fcfb1df4a" },
+        where: { id: "6449298d9f15569fcfb1df4a" }, //!tofix
         data: {
           ...updateProductDto,
           translations: {
@@ -162,22 +191,22 @@ export class ProductsService {
         }
       });
       return { action_status: "updated successfully !", updatedProduct };
-    } catch (error) { 
+    } catch (error) {
       throw error;
     }
   }
 
   async remove(_id: string) {
     try {
-      const relatedCategory = await this.prisma.product.update({where:{id:_id},data:{categorys:{set:[]}}})
+      const relatedCategory = await this.prisma.product.update({ where: { id: _id }, data: { categorys: { set: [] } } })
       const ToDelete = await this.prisma.product.delete({ where: { id: _id } });
-      const ImgUrl= new URL(ToDelete.imgUrl) 
+      const ImgUrl = new URL(ToDelete.imgUrl)
 
       // console.log(ImgUrl.pathname.substring(1));
-      
-     const res = await this.aws.DeletFromS3(ImgUrl.pathname.substring(1));
-    //  console.log(res);
-     
+
+      const res = await this.aws.DeletFromS3(ImgUrl.pathname.substring(1));
+      //  console.log(res);
+
       return { action_status: `sucessfuly deleted :${_id}`, ToDelete };
     } catch (error) {
       throw error;
