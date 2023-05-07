@@ -57,6 +57,7 @@ model Product {
   categoryIds   String[]              @db.ObjectId
   translations  productTranslations[]
   active        Boolean
+  ProductInCart ProductInCart?
 }
 
 model productTranslations {
@@ -65,7 +66,7 @@ model productTranslations {
   name        String?
   description String?
 
-  Product   Product? @relation(fields: [productId], references: [id],onDelete:Cascade)
+  Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String?  @db.ObjectId
 }
 
@@ -73,11 +74,31 @@ model Category {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
-  imgUrl      String    
+  imgUrl      String
   name        String    @unique
   description String
   products    Product[] @relation(fields: [productsIds], references: [id])
   productsIds String[]  @db.ObjectId
+}
+
+model Cart {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  CartProducts    ProductInCart[] @relation(fields: [CartProductsIds], references: [id])
+  CartProductsIds String[]        @db.ObjectId
+}
+
+model ProductInCart {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  product   Product  @relation(fields: [productId], references: [id])
+  count     Int
+  productId String   @unique @db.ObjectId
+  Cart      Cart?    @relation(fields: [cartId], references: [id])
+  cartId    String?  @db.ObjectId
 }
 
 enum Role {
