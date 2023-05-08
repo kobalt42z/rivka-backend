@@ -16,7 +16,6 @@ export class ProductInCart {
 }
 
 export class CreateCartDto {
-
     @ValidateNested()
     @IsNotEmpty()
     @Type(() => ProductInCart)
