@@ -20,7 +20,7 @@ export class UserAreaController {
     constructor(
         private readonly userAreaService: UserAreaService,
         private readonly ordersService: OrdersService
-    ) { }
+    ) { } 
 
 
     @Get('myInfo')
