@@ -81,6 +81,10 @@ model Order {
   userId    String   @db.ObjectId
   cart      Cart     @relation(fields: [cartId], references: [id])
   cartId    String   @unique @db.ObjectId
+
+  totalItems Int?
+  totalPrice Int?
+  status Status @default(WAITING_FOR_PAYMENT)
 }
 
 model Cart {
@@ -119,4 +123,16 @@ enum Role {
   USER
   ADMIN
   EMPLOYEE
+}
+
+enum Status {
+  WAITING_FOR_PAYMENT
+  PAYED
+  WAITING_FOR_APROVEMENT
+  APROVED
+  WAITING_FOR_DELIVERY
+  IN_DELIVERY
+  ARIVED
+  ISSUE
+  IN_VERIFICATION
 }

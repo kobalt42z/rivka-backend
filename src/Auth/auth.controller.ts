@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
 import { userTokenPayload } from '../interfaces';
@@ -7,7 +7,9 @@ import { AuthService } from './auth.service';
 import { GetPayload } from '../decorators';
 import { LoginDto } from './dto/login.dto';
 import { JwtGuard } from './guards';
+import { VALIDATION_CONFIG } from 'src/GlobalConst';
 
+@UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authservices: AuthService) { }

@@ -10,12 +10,12 @@ import { PrismaClientExceptionFilter } from 'nestjs-prisma/dist/prisma-client-ex
 import { HttpStatus } from '@nestjs/common/enums';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
-// import { OrdersModule } from './orders/orders.module';
 import { AwsService } from './aws/aws.service';
 import { AwsModule } from './aws/aws.module';
 import { CartModule } from './cart/cart.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CommentsModule } from './comments/comments.module';
+import { OrdersModule } from './orders/orders.module';
 
 
 
@@ -30,7 +30,7 @@ import { CommentsModule } from './comments/comments.module';
     UserAreaModule,
     ProductsModule,
     CategoriesModule,
-    // OrdersModule,
+    OrdersModule,
     AwsModule,
     CartModule,
     ReviewsModule,
