@@ -155,10 +155,12 @@ export class ProductsService {
 
   async findOne(_id: string) {
     try {
-      const product = await this.prisma.product.findUniqueOrThrow({ where: { id: _id }, include: { categorys: true } });
+      const product = await this.prisma.product.findUniqueOrThrow({ where: { id: _id }, include: {translations:true ,Comment:{
+        include:{user:true}
+      }} });
       return product;
     } catch (error) {
-      throw error;
+      throw error;  
     }
   }
 
