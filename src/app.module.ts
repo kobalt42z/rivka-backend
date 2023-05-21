@@ -13,7 +13,6 @@ import { CategoriesModule } from './categories/categories.module';
 import { AwsService } from './aws/aws.service';
 import { AwsModule } from './aws/aws.module';
 import { CartModule } from './cart/cart.module';
-import { ReviewsModule } from './reviews/reviews.module';
 import { CommentsModule } from './comments/comments.module';
 import { OrdersModule } from './orders/orders.module';
 
@@ -33,7 +32,6 @@ import { OrdersModule } from './orders/orders.module';
     OrdersModule,
     AwsModule,
     CartModule,
-    ReviewsModule,
     CommentsModule,
   ],
   controllers: [],
