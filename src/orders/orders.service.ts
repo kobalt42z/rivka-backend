@@ -3,18 +3,42 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { SelfOrderDto } from './dto/selfOrder.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { connect } from 'http2';
 
 @Injectable()
 export class OrdersService {
     constructor(private readonly prisma: PrismaService) { }
 
+    async createOrder(orderDto: CreateOrderDto) {
+        try {
 
+            const order = await this.prisma.order.create({
+                data: {
+                    user: {
+                        connect: {
+                            id: orderDto.user
+                        },
+                    },
+                    cartProducts: {
+                        createMany: {
+                            data: orderDto.productsInCart
+                        },
+                    },
+
+                }
+            })
+
+
+        } catch (error) {
+
+        }
+    }
 
     async findAll() {
         try {
             const orders = await this.prisma.order.findMany({
                 include: {
-                    cart: { include: { cartProducts: { include: { product: true } } } },
+                    cartProducts
                     user: true,
                 }
             });
@@ -38,8 +62,8 @@ export class OrdersService {
     async findMyOrders(_id: string) {
         try {
             const orders = await this.prisma.order.findMany({
-                where:{
-                    userId:_id
+                where: {
+                    userId: _id
                 },
                 include: {
                     cart: { include: { cartProducts: { include: { product: true } } } },
@@ -60,5 +84,5 @@ export class OrdersService {
         return { action_status: `the #${_id} order was remouved from data base`, remouvedOrder };
     }
 
-  
+
 }

@@ -25,9 +25,6 @@ export class ProductsService {
   async createAndConnect(createProductDto: CreateProductDto, file: Express.Multer.File) {
     try {
       const imgURL = await this.aws.uploadToS3(file, 'products')
-
-
-
       const categories = createProductDto.categoryIds.map((id) => ({ id }));
 
       const translatArr = [
@@ -58,42 +55,13 @@ export class ProductsService {
 
   }
 
-  // !cannot create multiple link to categories , category must be updated with method joinCategoryByName
-  async createOneOrMany(createProductDtoArray: CreateProductDto[]) {
-    try {
 
-      const products = await this.prisma.product.createMany({ data: createProductDtoArray });
-      return { msg: "product created succesfully!", products }
-    } catch (error) {
-      throw error
-    }
-  }
 
-  /*
-    * this function recive product_id and an array of category ids
-    * the function will map the ids provided and transform them into an array of objects that
-    * contains id 
-    * next the function will call prisma update to connect the product to categories using connect to relational field categoriy  
-  */
-  async connectToCategories(product_id: string, JoinCategoryIdDto: JoinCategoryDto) {
-    console.log(JoinCategoryDto);
-
-    try {
-      const categories = JoinCategoryIdDto.categoryIds.map((id) => ({ id }))
-      const updatedCategory = await this.prisma.product.update({ where: { id: product_id }, data: { categorys: { connect: categories } } })
-      return { action_status: "category linked sucessfuly !", updatedCategory }
-    } catch (error) {
-      throw error;
-    }
-
-  }
 
   async findAllInCategory(categoryId: string) {
     try {
       if (!categoryId) throw new HttpException('BadRequest', HttpStatus.BAD_REQUEST)
       const itemsInCategory = await this.prisma.category.findUniqueOrThrow({ where: { id: categoryId }, include: { products: true, _count: { select: { products: true } } } })
-
-
       return itemsInCategory;
     } catch (error) {
       throw error;
@@ -110,8 +78,6 @@ export class ProductsService {
         take: 1,
         skip: skipCategories * 1 || 0,
       })
-
-
       return { categoryAndItems };
     } catch (error) {
       throw error;
@@ -144,23 +110,28 @@ export class ProductsService {
       throw error
     }
   }
+
+  async findOne(_id: string) {
+    try {
+      const product = await this.prisma.product.findUniqueOrThrow({
+        where: { id: _id }, include: {
+          translations: true, Comment: {
+            include: { user: true }
+          }
+        }
+      });
+      return product;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getSlist() {
     try {
       const slist = await this.prisma.product.findMany({ select: { id: true, name: true } })
       return slist
     } catch (error) {
       throw error
-    }
-  }
-
-  async findOne(_id: string) {
-    try {
-      const product = await this.prisma.product.findUniqueOrThrow({ where: { id: _id }, include: {translations:true ,Comment:{
-        include:{user:true}
-      }} });
-      return product;
-    } catch (error) {
-      throw error;  
     }
   }
 
@@ -174,10 +145,9 @@ export class ProductsService {
         updateProductDto?.translations?.fr,
         updateProductDto?.translations?.en,
       ]
-      console.log(transArr);
-      console.log(_id, typeof _id);
+      
       const updatedProduct = await this.prisma.product.update({
-        where: { id: "6449298d9f15569fcfb1df4a" }, //!tofix
+        where: { id: _id }, //TODO ToCheck
         data: {
           ...updateProductDto,
           translations: {

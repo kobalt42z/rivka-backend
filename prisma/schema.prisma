@@ -11,27 +11,31 @@ datasource db {
 }
 
 model User {
-  id               String    @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @default(now()) @updatedAt
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   firstName        String
   lastName         String
   dateOfBirth      DateTime
-  email            String    @unique
+  email            String   @unique
   phone            String
   acceptEmail      Boolean
   selectedLanguage String
   hash             String
-  role             Role      @default(USER)
-  orders           Order[]
-  cart             Cart?
-  Comment          Comment[]
+  role             Role     @default(USER)
+
+  orders   Order[]
+  Comment  Comment[]
+  WishList WishList?
 }
 
 model Product {
-  id            String                @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @default(now()) @updatedAt
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   name          String                @unique
   brand         String
   description   String
@@ -44,31 +48,39 @@ model Product {
   sizes         String[]
   curves        String[]
   thickness     String[]
-  categorys     Category[]            @relation(fields: [categoryIds], references: [id])
-  categoryIds   String[]              @db.ObjectId
-  translations  productTranslations[]
   active        Boolean
+  translations  productTranslations[]
+
+  Comment Comment[]
+
+  categorys   Category[] @relation(fields: [categoryIds], references: [id])
+  categoryIds String[]   @db.ObjectId
+  like        Int        @default(0)
+
   ProductInCart ProductInCart?
-  Comment       Comment[]
+
+  WishList   WishList? @relation(fields: [wishListId], references: [id])
+  wishListId String?   @db.ObjectId
 }
 
 model productTranslations {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   language    String
   name        String?
   description String?
-
-  Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String?  @db.ObjectId
+  Product     Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId   String?  @db.ObjectId
 }
 
 model Category {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now()) @updatedAt
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   imgUrl      String
-  name        String    @unique
+  name        String @unique
   description String
+
   products    Product[] @relation(fields: [productsIds], references: [id])
   productsIds String[]  @db.ObjectId
 }
@@ -77,46 +89,54 @@ model Order {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @db.ObjectId
-  cart      Cart     @relation(fields: [cartId], references: [id])
-  cartId    String   @unique @db.ObjectId
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
+
+  cartProducts ProductInCart[]
 
   totalItems Int?
-  totalPrice Int?
-  status Status @default(WAITING_FOR_PAYMENT)
-}
+  totalPrice Int ?
 
-model Cart {
-  id           String          @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @default(now()) @updatedAt
-  cartProducts ProductInCart[]
-  Order        Order?
-
-  User   User   @relation(fields: [userId], references: [id])
-  userId String @unique @db.ObjectId
+  status     Status @default(WAITING_FOR_PAYMENT)
 }
 
 model ProductInCart {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
   product   Product @relation(fields: [productId], references: [id])
   productId String  @unique @db.ObjectId
+
   count     Int
-  cart      Cart?   @relation(fields: [cartId], references: [id])
-  cartId    String? @db.ObjectId
+  color     String?
+  sizes     String?
+  curves    String?
+  thickness String?
+
+  Order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId String @db.ObjectId
 }
 
 model Comment {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String  @unique @db.ObjectId
-  product   Product @relation(fields: [productId], references: [id])
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @db.ObjectId
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String  @unique @db.ObjectId
-  title     String
-  body      String
-  rating    Int
-  createdAt DateTime @default(now()) 
+
+  title  String
+  body   String
+  rating Int
+}
+
+model WishList {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String    @unique @db.ObjectId
+  products  Product[]
 }
 
 enum Role {

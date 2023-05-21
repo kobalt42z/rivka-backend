@@ -15,6 +15,7 @@ import { AwsModule } from './aws/aws.module';
 import { CartModule } from './cart/cart.module';
 import { CommentsModule } from './comments/comments.module';
 import { OrdersModule } from './orders/orders.module';
+import { WishListModule } from './wish-list/wish-list.module';
 
 
 
@@ -31,8 +32,9 @@ import { OrdersModule } from './orders/orders.module';
     CategoriesModule,
     OrdersModule,
     AwsModule,
-    CartModule,
+    ,
     CommentsModule,
+    WishListModule,
   ],
   controllers: [],
   providers: [{
