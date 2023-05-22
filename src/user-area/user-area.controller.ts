@@ -8,9 +8,9 @@ import { Roles, userTokenPayload } from '../interfaces';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserAreaService } from './user-area.service';
 // import { OrdersService } from '../orders/orders.service';
-import { SelfOrderDto } from '../orders/dto/selfOrder.dto';
 import { VALIDATION_CONFIG } from '../GlobalConst';
 import { OrdersService } from 'src/orders/orders.service';
+import { WishListService } from 'src/wish-list/wish-list.service';
 
 @UseGuards(JwtGuard, RolesGuard)
 @OnlyRole(Roles.USER)
@@ -19,8 +19,9 @@ import { OrdersService } from 'src/orders/orders.service';
 export class UserAreaController {
     constructor(
         private readonly userAreaService: UserAreaService,
-        private readonly ordersService: OrdersService
-    ) { } 
+        private readonly ordersService: OrdersService,
+        private readonly wishListService: WishListService
+    ) { }
 
 
     @Get('myInfo')
@@ -34,6 +35,14 @@ export class UserAreaController {
 
         return this.ordersService.findMyOrders(payload.sub)
     }
+
+    @Get('myWishList')
+    findeMyWishList(@GetPayload() payload: userTokenPayload, ) {
+        
+
+        return this.wishListService.myWishList(payload.sub)
+    }
+
     // @Post('selfOrder')
     // selfOrder(@GetPayload() payload : userTokenPayload ,@Body() selfOrderDto:SelfOrderDto ){
     //     return this.ordersService.selfOrder(payload.sub,selfOrderDto)

@@ -14,10 +14,10 @@ export class CreateUserDto {
     @MaxLength(10)
     lastName: string;
 
-    @IsNotEmpty()   
+    @IsOptional()
     @IsDateString() //ISO 8601 format
-    dateOfBirth:Date;
-    
+    dateOfBirth: Date;
+
 
     @IsEmail()
     @IsNotEmpty()
@@ -41,7 +41,7 @@ export class CreateUserDto {
     @IsBoolean()
     acceptEmail: boolean;
 
-    @IsNotEmpty()
+    @IsOptional()
     @MaxLength(2)
     @IsString()
     selectedLanguage: string;

@@ -12,7 +12,7 @@ import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { AwsService } from './aws/aws.service';
 import { AwsModule } from './aws/aws.module';
-import { CartModule } from './cart/cart.module';
+
 import { CommentsModule } from './comments/comments.module';
 import { OrdersModule } from './orders/orders.module';
 import { WishListModule } from './wish-list/wish-list.module';
@@ -32,7 +32,6 @@ import { WishListModule } from './wish-list/wish-list.module';
     CategoriesModule,
     OrdersModule,
     AwsModule,
-    ,
     CommentsModule,
     WishListModule,
   ],

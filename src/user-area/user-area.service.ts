@@ -21,5 +21,7 @@ export class UserAreaService {
             throw error;
         }
     }
+
+    
   
 }

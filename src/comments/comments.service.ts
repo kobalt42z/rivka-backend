@@ -33,11 +33,13 @@ export class CommentsService {
   }
 
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} comment`;
+  async remove(_id: string) {
+    try {
+      const res = await this.prisma.comment.delete({ where: { id: _id } })
+      return res
+    } catch (error) {
+      throw error
+    }
   }
 }

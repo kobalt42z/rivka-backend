@@ -9,10 +9,10 @@ import { Roles, userTokenPayload } from 'src/interfaces';
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) { }
-// ! not tested yet 
 
-  @OnlyRole(Roles.ADMIN)
-  @Post()
+
+  @OnlyRole(Roles.USER)
+  @Post(":productId")
   create(
     @Body() createCommentDto: CreateCommentDto,
     @Param('productId') productId: string,
@@ -21,23 +21,9 @@ export class CommentsController {
     return this.commentsService.create(createCommentDto, user.sub, productId);
   }
 
-  @Get()
-  findAll() {
-    return this.commentsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentsService.update(+id, updateCommentDto);
-  }
-
+  @OnlyRole(Roles.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.commentsService.remove(+id);
+    return this.commentsService.remove(id);
   }
 }

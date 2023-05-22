@@ -115,9 +115,7 @@ export class ProductsService {
     try {
       const product = await this.prisma.product.findUniqueOrThrow({
         where: { id: _id }, include: {
-          translations: true, Comment: {
-            include: { user: true }
-          }
+          translations: true, Comment: true
         }
       });
       return product;

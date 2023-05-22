@@ -20,6 +20,7 @@ export class ImgAndJsonValidator implements PipeTransform {
   constructor(private validationOption: FileValidationOptions) { }
   transform(value: ProductReqValidatorInput, metadata: ArgumentMetadata) {
     if(this.validationOption.imageOptional) return undefined;
+    if(!value)throw new BadRequestException('invalid req');
     if(!value.image)throw new BadRequestException('image field is missing');
     const { image:[target]} = value
     

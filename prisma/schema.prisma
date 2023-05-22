@@ -18,11 +18,11 @@ model User {
 
   firstName        String
   lastName         String
-  dateOfBirth      DateTime
+  dateOfBirth      DateTime ?
   email            String   @unique
   phone            String
-  acceptEmail      Boolean
-  selectedLanguage String
+  acceptEmail      Boolean?
+  selectedLanguage String?
   hash             String
   role             Role     @default(USER)
 

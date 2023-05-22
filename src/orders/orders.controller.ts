@@ -6,35 +6,36 @@ import { JwtGuard, RolesGuard } from '../Auth/guards';
 import { GetPayload, OnlyRole } from '../decorators';
 import { Roles, userTokenPayload } from '../interfaces';
 import { VALIDATION_CONFIG } from '../GlobalConst';
+import { setStatusDto } from './dto/set-status.dto';
 
 @UseGuards(JwtGuard, RolesGuard)
-@OnlyRole(Roles.ADMIN)
 @UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) { }
 
-//   @Post()
-//   create(@Body() createOrderDto: CreateOrderDto) {
-//     return this.ordersService.create(createOrderDto);
-//   }
+  @Post()
+  create(@Body() createOrderDto: CreateOrderDto) {
+    return this.ordersService.createOrder(createOrderDto);
+  }
 
 
-
+  @OnlyRole(Roles.ADMIN)
   @Get()
   findAll() {
     return this.ordersService.findAll();
   }
 
 
-//   @Get(':id')
-//   findOne(@Param('id') id: string) {
-//     return this.ordersService.findOne(id);
-//   }
+  @OnlyRole(Roles.ADMIN)
+  @Post("setStatus/:id")
+  setStatus(@Param("id") orderId: string, @Body() Body: setStatusDto) {
+    return this.ordersService.setStatus(orderId, Body.status);
+  }
 
 
 
-
+  @OnlyRole(Roles.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.ordersService.remove(id);

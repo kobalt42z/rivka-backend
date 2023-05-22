@@ -51,6 +51,8 @@ export class ProductsController {
 
   }
 
+
+
   @Get()
   findAll(@Query('page') page: number) {
 
@@ -61,7 +63,7 @@ export class ProductsController {
     return this.productsService.getSlist();
   }
   @Get('shopCount')
-  getShopCount(){
+  getShopCount() {
     return this.productsService.getShopCount();
   }
 
@@ -73,11 +75,10 @@ export class ProductsController {
 
   @Get('byCategory/:categoryId')
   findAllInCategory(@Param('categoryId') categoryId: string) {
-    
     return this.productsService.findAllInCategory(categoryId);
   }
 
-  
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(id);

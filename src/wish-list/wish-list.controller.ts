@@ -1,34 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { WishListService } from './wish-list.service';
 import { CreateWishListDto } from './dto/create-wish-list.dto';
 import { UpdateWishListDto } from './dto/update-wish-list.dto';
+import { JwtGuard, RolesGuard } from 'src/Auth/guards';
+import { GetPayload, OnlyRole } from 'src/decorators';
+import { Roles, userTokenPayload } from 'src/interfaces';
 
-@Controller('wish-list')
+@UseGuards(JwtGuard, RolesGuard)
+@OnlyRole(Roles.USER)
+@Controller('wishList')
 export class WishListController {
-  constructor(private readonly wishListService: WishListService) {}
+  constructor(private readonly wishListService: WishListService) { }
 
-  @Post()
-  create(@Body() createWishListDto: CreateWishListDto) {
-    return this.wishListService.create(createWishListDto);
+  @Patch(':productId')
+  Like(@Param("productId") productId: string, @GetPayload() payload: userTokenPayload) {
+    return this.wishListService.LikeProduct(productId, payload.sub);
+  }
+  @Delete(':productId')
+  DisLike(@Param("productId") productId: string, @GetPayload() payload: userTokenPayload) {
+    return this.wishListService.dislikeProduct(productId, payload.sub);
   }
 
-  @Get()
-  findAll() {
-    return this.wishListService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.wishListService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWishListDto: UpdateWishListDto) {
-    return this.wishListService.update(+id, updateWishListDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.wishListService.remove(+id);
-  }
 }

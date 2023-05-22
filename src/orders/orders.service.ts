@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { SelfOrderDto } from './dto/selfOrder.dto';
+
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { connect } from 'http2';
+import { OrderStatus } from 'src/interfaces/Status.interface';
 
 @Injectable()
 export class OrdersService {
@@ -24,6 +25,7 @@ export class OrdersService {
                             data: orderDto.productsInCart
                         },
                     },
+                    
 
                 }
             })
@@ -34,13 +36,32 @@ export class OrdersService {
         }
     }
 
+    async setStatus(orderId: string, status: OrderStatus) {
+        try {
+            const order = await this.prisma.order.update({
+                where: {
+                    id: orderId
+                },
+                data: {
+                    status: status,
+                    
+                },
+                
+            });
+            return order
+        } catch (error) {
+            throw error
+        }
+    }
+
     async findAll() {
         try {
             const orders = await this.prisma.order.findMany({
                 include: {
-                    cartProducts
+                    cartProducts: { include: { product: true } },
                     user: true,
                 }
+                
             });
             return orders;
         } catch (error) {
@@ -48,16 +69,7 @@ export class OrdersService {
         }
     }
 
-    async findByDate(_id: string) {
-        try {
-            const order = await this.prisma.order.findUniqueOrThrow({
-                where: { id: _id },
-            });
-            return order;
-        } catch (error) {
-            throw error;
-        }
-    }
+
 
     async findMyOrders(_id: string) {
         try {
@@ -66,12 +78,10 @@ export class OrdersService {
                     userId: _id
                 },
                 include: {
-                    cart: { include: { cartProducts: { include: { product: true } } } },
-                    user: true,
+                    cartProducts: { include: { product: true } },
                 }
             });
             return orders;
-
         } catch (error) {
             throw error;
         }
