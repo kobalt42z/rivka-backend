@@ -31,7 +31,7 @@ export class WishListService {
           }
         }
       })
-      const like = await this.prisma.product.update({ where: { id: productId }, data: { like: { increment: 1 } } })
+
       return resp
     } catch (error) {
       throw error
@@ -48,7 +48,7 @@ export class WishListService {
           products: { disconnect: { id: productId } }
         }
       })
-      const like = await this.prisma.product.update({ where: { id: productId }, data: { like: { decrement: 1 } } })
+
       return resp
     } catch (error) {
       throw error

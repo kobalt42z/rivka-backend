@@ -18,13 +18,13 @@ model User {
 
   firstName        String
   lastName         String
-  dateOfBirth      DateTime ?
-  email            String   @unique
+  dateOfBirth      DateTime?
+  email            String    @unique
   phone            String
   acceptEmail      Boolean?
   selectedLanguage String?
   hash             String
-  role             Role     @default(USER)
+  role             Role      @default(USER)
 
   orders   Order[]
   Comment  Comment[]
@@ -55,12 +55,11 @@ model Product {
 
   categorys   Category[] @relation(fields: [categoryIds], references: [id])
   categoryIds String[]   @db.ObjectId
-  like        Int        @default(0)
 
   ProductInCart ProductInCart?
 
-  WishList   WishList? @relation(fields: [wishListId], references: [id])
-  wishListId String?   @db.ObjectId
+  WishList   WishList[] @relation(fields: [wishListId], references: [id])
+  wishListId String[]   @db.ObjectId
 }
 
 model productTranslations {
@@ -96,9 +95,9 @@ model Order {
   cartProducts ProductInCart[]
 
   totalItems Int?
-  totalPrice Int ?
+  totalPrice Int?
 
-  status     Status @default(WAITING_FOR_PAYMENT)
+  status Status @default(WAITING_FOR_PAYMENT)
 }
 
 model ProductInCart {
@@ -136,7 +135,8 @@ model WishList {
   createdAt DateTime  @default(now())
   user      User      @relation(fields: [userId], references: [id])
   userId    String    @unique @db.ObjectId
-  products  Product[]
+  products  Product[] @relation(fields: [productsIds], references: [id])
+  productsIds String[] @unique @db.ObjectId
 }
 
 enum Role {

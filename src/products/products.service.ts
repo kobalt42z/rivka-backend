@@ -115,7 +115,11 @@ export class ProductsService {
     try {
       const product = await this.prisma.product.findUniqueOrThrow({
         where: { id: _id }, include: {
-          translations: true, Comment: true
+          translations: true, Comment: true, _count: {
+            select: {
+              WishList: true
+            }
+          }
         }
       });
       return product;
@@ -143,7 +147,7 @@ export class ProductsService {
         updateProductDto?.translations?.fr,
         updateProductDto?.translations?.en,
       ]
-      
+
       const updatedProduct = await this.prisma.product.update({
         where: { id: _id }, //TODO ToCheck
         data: {
