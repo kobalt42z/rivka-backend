@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, UsePipes, ValidationPipe, Get, Req } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
 import { userTokenPayload } from '../interfaces';
@@ -22,16 +22,21 @@ export class AuthController {
 
     @Post('login')
     login(@Body() loginDto: LoginDto) {
-        
-        
+
+
         return this.authservices.login(loginDto);
     }
 
     @UseGuards(JwtGuard)
-    @Post('validateMe')
+    @Get('validateMe')
     validateMe(@GetPayload() payload: userTokenPayload) {
-        
-            return this.authservices.validateMe(payload);
-        
+
+        return this.authservices.validateMe(payload);
+
+    }
+
+    @Get("testAuth")
+    FBValidation(@Req() req) {
+        return {msg:'hellow'}
     }
 }
