@@ -1,12 +1,15 @@
-import { PrismaClient } from "@prisma/client"
-export interface userTokenPayload {
-  firstName:string;
-  lastName:string;
-  sub: string,
-  role: Roles,
-  iat: number,
-  exp: number
-}
+import { DecodedIdToken } from "firebase-admin/lib/auth/token-verifier";
+// export interface userTokenPayload {
+//   firstName:string;
+//   lastName:string;
+//   sub: string,
+//   role: Roles,
+//   iat: number,
+//   exp: number
+// }
+
+
+export interface userTokenPayload extends DecodedIdToken {}
 export enum Roles {
   USER = 'USER',
   ADMIN = 'ADMIN',

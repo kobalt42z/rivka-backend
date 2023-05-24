@@ -8,6 +8,7 @@ import { GetPayload } from '../decorators';
 import { LoginDto } from './dto/login.dto';
 import { JwtGuard } from './guards';
 import { VALIDATION_CONFIG } from 'src/GlobalConst';
+import { FbAuthGuard } from './guards/fb-auth/fb-auth.guard';
 
 @UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('auth')
@@ -34,9 +35,9 @@ export class AuthController {
         return this.authservices.validateMe(payload);
 
     }
-
+    @UseGuards(FbAuthGuard)
     @Get("testAuth")
     FBValidation(@Req() req) {
-        return {msg:'hellow'}
+        return { msg: req.user }
     }
 }
