@@ -1,0 +1,1 @@
+# admin role added as custom claime to the JWT token in FB SIDE 

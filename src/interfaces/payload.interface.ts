@@ -9,7 +9,9 @@ import { DecodedIdToken } from "firebase-admin/lib/auth/token-verifier";
 // }
 
 
-export interface userTokenPayload extends DecodedIdToken {}
+export interface userTokenPayload extends DecodedIdToken {
+  role?:Roles;
+}
 export enum Roles {
   USER = 'USER',
   ADMIN = 'ADMIN',

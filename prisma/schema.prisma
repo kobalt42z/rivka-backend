@@ -11,24 +11,41 @@ datasource db {
 }
 
 model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  firstName        String
-  lastName         String
+  uid              String @unique 
+  authProviderName String
+
+  fullName         String
   dateOfBirth      DateTime?
   email            String    @unique
   phone            String
   acceptEmail      Boolean?
   selectedLanguage String?
-  hash             String
-  role             Role      @default(USER)
+
+
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId String  @unique @db.ObjectId
 
   orders   Order[]
   Comment  Comment[]
   WishList WishList?
+}
+
+model Address {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  street     String
+  stNum      Int
+  entrance   String?
+  apartment  Int
+  city       String
+  postalCode String
+  User       User?
 }
 
 model Product {
@@ -131,12 +148,12 @@ model Comment {
 }
 
 model WishList {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime  @default(now())
-  user      User      @relation(fields: [userId], references: [id])
-  userId    String    @unique @db.ObjectId
-  products  Product[] @relation(fields: [productsIds], references: [id])
-  productsIds String[] @unique @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String    @unique @db.ObjectId
+  products    Product[] @relation(fields: [productsIds], references: [id])
+  productsIds String[]  @unique @db.ObjectId
 }
 
 enum Role {

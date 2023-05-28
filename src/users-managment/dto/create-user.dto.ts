@@ -1,5 +1,41 @@
-import { IsBoolean, IsDate, IsDateString, isNotEmpty, IsOptional } from "class-validator";
+import { Type } from "class-transformer";
+import { IsBoolean, IsDate, IsDateString, isNotEmpty, IsNumber, isNumber, IsOptional, Max, ValidateNested } from "class-validator";
 import { IsAlpha, IsAlphanumeric, isAlphanumeric, IsEmail, IsNotEmpty, IsPhoneNumber, IsString, isString, IsStrongPassword, maxLength, MaxLength, MinLength } from "class-validator";
+
+
+
+export class AddressDto {
+
+    @IsNotEmpty()
+    @MaxLength(200)
+    @IsString()
+    street: string
+
+    @IsNumber()
+    @Max(1000)
+    stNum: number;
+
+
+    @IsOptional()
+    @MaxLength(2)
+    @IsString()
+    entrance?: string; // optional
+
+    @IsNotEmpty()
+    @Max(1000)
+    @IsNumber()
+    apartment: number;
+
+    @IsNotEmpty()
+    @MaxLength(200)
+    @IsString()
+    city: string;
+
+    @IsNotEmpty()
+    @MaxLength(15)
+    @IsString()
+    postalCode: string;
+}
 
 //the dto allow us to pass data and filter them using pipe  and validator class .
 export class CreateUserDto {
@@ -7,16 +43,7 @@ export class CreateUserDto {
     @IsNotEmpty()
     @IsString()
     @MaxLength(10)
-    firstName: string;
-
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(10)
-    lastName: string;
-
-    @IsOptional()
-    @IsDateString() //ISO 8601 format
-    dateOfBirth: Date;
+    fullName: string;
 
 
     @IsEmail()
@@ -27,15 +54,13 @@ export class CreateUserDto {
 
     @IsNotEmpty()
     @IsString()
-    @MinLength(8)
-    @MaxLength(16)
-    password: string;
-
-    @IsNotEmpty()
-    @IsString()
     @IsPhoneNumber() // ! must start with +00 region code 
     @MaxLength(20)
     phone: string;
+
+    @IsOptional()
+    @IsDateString() //ISO 8601 format
+    dateOfBirth: Date;
 
     @IsOptional()
     @IsBoolean()
@@ -46,4 +71,9 @@ export class CreateUserDto {
     @IsString()
     selectedLanguage: string;
 
+    @ValidateNested()
+    @IsNotEmpty()
+    @Type(() => AddressDto)
+    address: AddressDto;
 }
+

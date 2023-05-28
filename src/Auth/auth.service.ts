@@ -5,11 +5,10 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
 import { Payload, PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { throwError } from 'rxjs';
-import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
-import { userTokenPayload } from '../interfaces';
 import { AwsService } from '../aws/aws.service';
 import { AssumeRoleCommandOutput } from '@aws-sdk/client-sts';
+import {  DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 
 @Injectable()
 export class AuthService {
@@ -20,76 +19,18 @@ export class AuthService {
         private Aws: AwsService
     ) { }
 
-    async register(dto: CreateUserDto) {
-        const hash = await argon.hash(dto.password);
+
+    // check if uid exist in db and validate the token 
+    async isRegistred(decodedToken :DecodedIdToken) {
         try {
-            const user = await this.prisma.user.create({
-                data: {
-                    firstName: dto.firstName,
-                    lastName: dto.lastName,
-                    dateOfBirth: dto.dateOfBirth,
-                    email: dto.email,
-                    hash: hash,
-                    phone: dto.phone,
-                    acceptEmail: dto.acceptEmail ? true : false,
-                    selectedLanguage: dto.selectedLanguage
-                }
-            })
-            return { msg: "created successfully!", user }
-        } catch (err) {
-            throw err
-        }
-
-    }
-
-    async login(dto: LoginDto) {
-        try {
-            const user = await this.prisma.user.findUniqueOrThrow({
-                where: {
-                    email: dto.email
-                }
-            });
-            const pwdMatch = await argon.verify(user.hash, dto.password)
-            if (!pwdMatch) throw new ForbiddenException("incorret credentials")
-
-            //  const subsetUser = (({ email, firstName, lastName, id, role }) => (({ email, firstName, lastName, id, role })))(user);
-
-
-            delete user.hash
-            const token = await this.signToken(user.id, user.role, [user.firstName, user.lastName]);
-            if (user.role === "ADMIN") {
-               
-                
-               
-
-                return { token: token, user,  }
-
-            }
-            return { token: token, user }
-
-
+            const resp = await this.prisma.user.findUniqueOrThrow({ where: { uid: decodedToken.sub } })
+            return resp
         } catch (error) {
-            if (error.code === "P2025") throw new ForbiddenException("incorrect credentials .")
-            throw error;
+            throw error
         }
-
     }
 
-    //  * function that sign token 
-    async signToken(id: string, role: string, fullName: string[]): Promise<string> {
-        const payload = { sub: id, role, firstName: fullName[0], lastName: fullName[1] }
-        const secret = this.config.get('JWT_SECRET')
 
-
-        return await this.jwt.signAsync(payload, { secret: secret, expiresIn: '60m' })
-    }
-    async validateToken(token: string): Promise<userTokenPayload> {
-        const decodeToken = await this.jwt.verifyAsync(token, { secret: this.config.get('JWT_TOKEN') })
-        return decodeToken
-    };
-    async validateMe(payload: userTokenPayload) {
-        return { valid: true, payload: payload }
-    }
 }
 
 

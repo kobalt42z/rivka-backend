@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Roles } from '../interfaces';
+import { Roles, userTokenPayload } from '../interfaces';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
+import * as FBAdmin from 'firebase-admin'
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) { }
@@ -11,28 +11,44 @@ export class UsersService {
     return { msg: 'This action adds a new user' };
   }
 
-  async findOne(_id: string) {
+  async findOne(uid: string) {
     try {
       const user = await this.prisma.user.findUniqueOrThrow({
         where: {
-          id: _id,
+          uid
         }
       });
-      
-      delete user.hash
-      return user;
+
+      const FBUser = await FBAdmin.auth().getUser(uid);
+      return { user, claims:FBUser.customClaims};
     } catch (error) {
-      
+
       throw error;
     }
   }
 
-  async update(_id: string, updateUserDto: UpdateUserDto) {
+
+  async findAll() {
+    try {
+      const users = await this.prisma.user.findMany({});
+      return users;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  async update(uid: string, data: UpdateUserDto) {
     try {
       const user = await this.prisma.user.update({
-        where: { id: _id },
+        where: { uid: uid },
         data: {
-          ...updateUserDto
+          ...data,
+          address: {
+            update: {
+              ...data.address
+            }
+          }
         },
       })
       return { action_status: "uppdtated successfully", user }
@@ -42,10 +58,10 @@ export class UsersService {
 
   }
 
-  async remove(_id: string) {
+  async remove(uid: string) {
     try {
       const user = await this.prisma.user.delete({
-        where: { id: _id }
+        where: { uid }
       })
       return { action_status: "deleted successfully", user };
     } catch (error) {
@@ -54,26 +70,12 @@ export class UsersService {
   }
 
 
-  async findAll() {
+  // pass null to remove the claim 
+  async changeRole(uid: string, role: Roles | null) {
     try {
-      const users = await this.prisma.user.findMany({});
-      const withoutPWd = users.map(user => {
-        delete user.hash
-        return user
-      })
-      return withoutPWd;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async changeRole(_id: string, _role: Roles) {
-    try {
-      const user = await this.prisma.user.update({
-        where: { id: _id },
-        data: { role: _role }
-      })
-      return { action_status: `role changed sucessfully to ${user.role}`, user }
+      await FBAdmin.auth().setCustomUserClaims(uid, { role });
+      const user = await FBAdmin.auth().getUser(uid);
+      return { action_status: `role changed sucessfully to ${user.customClaims}`, user }
     } catch (error) {
       throw error
     }

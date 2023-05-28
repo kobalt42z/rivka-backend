@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Post, Body, ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Get, UseGuards, Post, Body, ValidationPipe, UsePipes, Req } from '@nestjs/common';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { AuthGuard } from '@nestjs/passport';
 import { GetPayload, OnlyRole } from '../decorators';
@@ -11,6 +11,8 @@ import { UserAreaService } from './user-area.service';
 import { VALIDATION_CONFIG } from '../GlobalConst';
 import { OrdersService } from 'src/orders/orders.service';
 import { WishListService } from 'src/wish-list/wish-list.service';
+import { CreateUserDto } from 'src/users-managment/dto/create-user.dto';
+import {  DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 
 @UseGuards(JwtGuard, RolesGuard)
 @OnlyRole(Roles.USER)
@@ -23,10 +25,14 @@ export class UserAreaController {
         private readonly wishListService: WishListService
     ) { }
 
+    @Post("registeration")
+    registeration(@Body() body: CreateUserDto, @GetPayload() tokenPayload :userTokenPayload) {
+        return this.userAreaService.register(body, tokenPayload)
+    }
 
     @Get('myInfo')
-    getMyInfo(@GetPayload() payload: userTokenPayload) {
-        return this.userAreaService.getMyInfo(payload.sub);
+    getMyInfo(@GetPayload() tokenPayload :userTokenPayload) {
+        return this.userAreaService.getMyInfo(tokenPayload);
     }
 
     @Get('myOrders')
@@ -37,8 +43,8 @@ export class UserAreaController {
     }
 
     @Get('myWishList')
-    findeMyWishList(@GetPayload() payload: userTokenPayload, ) {
-        
+    findeMyWishList(@GetPayload() payload: userTokenPayload) {
+
 
         return this.wishListService.myWishList(payload.sub)
     }

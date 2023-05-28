@@ -17,10 +17,10 @@ export class UsersController {
   constructor(private readonly usersService: UsersService , private readonly authServices:AuthService) {}
 
   
-  @Post('create')
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.authServices.register(createUserDto);
-  }
+  // @Post('create')
+  // create(@Body() createUserDto: CreateUserDto) {
+  //   return this.authServices.register(createUserDto);
+  // }
 
   @Get()
   findAll() {

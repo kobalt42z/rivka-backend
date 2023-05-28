@@ -5,7 +5,7 @@ import { userTokenPayload } from '../interfaces';
 import { CreateUserDto } from '../users-managment/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { GetPayload } from '../decorators';
-import { LoginDto } from './dto/login.dto';
+
 import { JwtGuard } from './guards';
 import { VALIDATION_CONFIG } from 'src/GlobalConst';
 import { FbAuthGuard } from './guards/fb-auth/fb-auth.guard';
@@ -15,29 +15,11 @@ import { FbAuthGuard } from './guards/fb-auth/fb-auth.guard';
 export class AuthController {
     constructor(private readonly authservices: AuthService) { }
 
-    @Post('register')
-    register(@Body() RegisterDto: CreateUserDto) {
-        return this.authservices.register(RegisterDto);
-    }
-
-
-    @Post('login')
-    login(@Body() loginDto: LoginDto) {
-
-
-        return this.authservices.login(loginDto);
-    }
-
-    @UseGuards(JwtGuard)
-    @Get('validateMe')
-    validateMe(@GetPayload() payload: userTokenPayload) {
-
-        return this.authservices.validateMe(payload);
-
-    }
+    
+// !not tested yet 
     @UseGuards(FbAuthGuard)
     @Get("testAuth")
-    FBValidation(@Req() req) {
-        return { msg: req.user }
+    FBValidation(@Req() req:any) {
+        return this.authservices.isRegistred(req.user)
     }
 }
