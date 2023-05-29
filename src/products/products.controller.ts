@@ -56,9 +56,9 @@ export class ProductsController {
     return this.productsService.findAllWithProducts(pages, categoryTarget);
   }
 
-  @Get('byCategory/:categoryId')
-  findAllInCategory(@Param('categoryId') categoryId: string) {
-    return this.productsService.findAllInCategory(categoryId);
+  @Get('byCategory/:categoryName')
+  findAllInCategory(@Param('categoryName') categoryName: string) {
+    return this.productsService.findAllInCategory(categoryName);
   }
 
 
@@ -66,6 +66,7 @@ export class ProductsController {
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(id);
   }
+
 
   @UseGuards(JwtGuard, RolesGuard)
   @OnlyRole(Roles.ADMIN)

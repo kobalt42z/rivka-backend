@@ -1,6 +1,33 @@
 import { Type } from "class-transformer";
 import { IsAlpha, IsAlphanumeric, IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, max, Max, MaxLength, MIN, MinLength, ValidateNested, } from "class-validator"
 
+export class SpecificationsDto {
+    @IsOptional()
+    @IsString()
+    @MaxLength(10)
+    color: string
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(10)
+    size: string
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(10)
+    curve: string
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(10)
+    thickness: string
+
+    @IsNotEmpty()
+    @IsNumber()
+    @Max(10000)
+    supply: number
+
+}
 
 export class LangueDto {
 
@@ -62,35 +89,19 @@ export class CreateProductDto {
     @Max(100)
     reduction_p: number
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsNumber()
     @Max(100000)
-    supply: number
+    supply?: number
 
-    // @IsUrl() // !expermiental
-    // @IsOptional()
-    // @MaxLength(200)
-    // imgUrl?: string
-
+    @IsNotEmpty()
+    @ValidateNested()
+    @Type(() => SpecificationsDto)
+    specifications: SpecificationsDto[]
 
     @IsArray()
     categoryIds: string[]
 
-    @IsOptional()
-    @IsArray()
-    colors: string[]
-
-    @IsOptional()
-    @IsArray()
-    sizes: string[]
-
-    @IsOptional()
-    @IsArray()
-    curves: string[]
-
-    @IsOptional()
-    @IsArray()
-    thickness: string[]
 
     @ValidateNested()
     @IsNotEmpty()

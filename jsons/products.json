@@ -1,48 +1,65 @@
 [
     {
         "name": "creme pieds",
-         "brand": "nivea",
-         "description": "une creme redoutable pour les pieds",
-         "ShortDescription": "creme redoutable pieds",
-         "price_ils": 65,
-         "reduction_p": 0,
-         "supply": 40
-     },
-     {
+        "brand": "nivea",
+        "description": "une creme redoutable pour les pieds",
+        "ShortDescription": "creme redoutable pieds",
+        "price_ils": 65,
+        "reduction_p": 0,
+        "supply": 40
+    },
+    {
         "name": "cremea pieds",
-         "brand": "nivea",
-         "description": "une creme redoutable pour les pieds",
-         "ShortDescription": "creme redoutable pieds",
-         "price_ils": 65,   
-         "reduction_p": 0,
-         "supply": 40,
-         "dictionairey":{
-            "hebrue":{
+        "brand": "nivea",
+        "description": "une creme redoutable pour les pieds",
+        "ShortDescription": "creme redoutable pieds",
+        "price_ils": 65,
+        "reduction_p": 0,
+        "supply": 40,
+        "dictionairey": {
+            "hebrue": {
                 "name": "x"
-
             },
-            "francais":{
+            "francais": {
                 "name": "x"
             }
-         }
-     },
-     {
-        
-        "name&Description":{
-            "fr":{
-                "name":"crem"
+        }
+    },
+    {
+        "name&Description": {
+            "fr": {
+                "name": "crem"
             },
-            "he":{
+            "he": {
                 "na"
             }
-            
         }
         "name": "cremeaa pieds",
-         "brand": "nivea",
-         "description": "une creme redoutable pour les pieds",
-         "ShortDescription": "creme redoutable pieds",
-         "price_ils": 65,
-         "reduction_p": 0,
-         "supply": 40
-     }
+        "brand": "nivea",
+        "description": "une creme redoutable pour les pieds",
+        "ShortDescription": "creme redoutable pieds",
+        "price_ils": 65,
+        "reduction_p": 0,
+        "supply": 40,
+        "colors": [
+            {
+                "code": "#ffff",
+                "supply": 56
+            },
+            {
+                "code": "#gggg",
+                "supply": 56
+            }
+        ],
+        "size":[
+            {
+                "size": "xl",
+                "supply": 56
+            },
+            {
+                "size": "xxl",
+                "supply": 56
+            }
+        ]
+    }
 ]

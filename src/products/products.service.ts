@@ -3,7 +3,7 @@ import { HttpStatus } from '@nestjs/common/enums';
 import { HttpException } from '@nestjs/common/exceptions';
 import { CategoriesService } from '../categories/categories.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateProductDto } from './dto/create-product.dto';
+import { CreateProductDto, SpecificationsDto } from './dto/create-product.dto';
 import { JoinCategoryDto } from './dto/join-category.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { TranslationDto } from './dto/create-product.dto'
@@ -44,6 +44,11 @@ export class ProductsService {
           },
           translations: {
             create: translatArr
+          },
+          Specification: {
+            createMany: {
+              data: createProductDto.specifications
+            }
           }
         }
       });
@@ -56,24 +61,43 @@ export class ProductsService {
   }
 
 
-
-
-  async findAllInCategory(categoryId: string) {
+// ?for shop 
+  // test if we get the basic product in addition to spec 
+  async findAllInCategory(categoryName: string) {
     try {
-      if (!categoryId) throw new HttpException('BadRequest', HttpStatus.BAD_REQUEST)
-      const itemsInCategory = await this.prisma.category.findUniqueOrThrow({ where: { id: categoryId }, include: { products: true, _count: { select: { products: true } } } })
+      const itemsInCategory = await this.prisma.category.findUniqueOrThrow({
+        where: {
+          name: categoryName
+        },
+        include: {
+          products: {
+            include: {
+              Specification: true
+            }
+          },
+          _count: {
+            select: {
+              products: true
+            }
+          }
+        }
+      })
       return itemsInCategory;
     } catch (error) {
       throw error;
     }
   }
 
+  
+  // test if we get the basic product in addition to spec 
   async findAllWithProducts(skipProducts: number, skipCategories: number) {
     try {
 
       const categoryAndItems = await this.prisma.category.findMany({
         include: {
-          products: true,
+          products: {
+            include: { Specification: true },
+          },
         },
         take: 1,
         skip: skipCategories * 1 || 0,
@@ -115,7 +139,7 @@ export class ProductsService {
     try {
       const product = await this.prisma.product.findUniqueOrThrow({
         where: { id: _id }, include: {
-          translations: true, Comment: true, _count: {
+          translations: true, Comment: true, Specification: true, _count: {
             select: {
               WishList: true
             }
@@ -125,6 +149,23 @@ export class ProductsService {
       return product;
     } catch (error) {
       throw error;
+    }
+  }
+
+  async findByspec(spec: SpecificationsDto) {
+    try {
+      const products = await this.prisma.product.findMany(
+        {
+          include: {
+            Specification: {
+              where: spec
+            }
+          }
+        }
+      )
+      return products
+    } catch (error) {
+      throw error
     }
   }
 

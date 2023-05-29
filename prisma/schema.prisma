@@ -15,7 +15,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  uid              String @unique 
+  uid              String @unique
   authProviderName String
 
   fullName         String
@@ -24,7 +24,6 @@ model User {
   phone            String
   acceptEmail      Boolean?
   selectedLanguage String?
-
 
   address   Address @relation(fields: [addressId], references: [id])
   addressId String  @unique @db.ObjectId
@@ -59,12 +58,8 @@ model Product {
   base_price    Int
   selling_price Int
   reduction_p   Int?                  @default(0)
-  supply        Int
+  supply        Int?
   imgUrl        String?
-  colors        String[]
-  sizes         String[]
-  curves        String[]
-  thickness     String[]
   active        Boolean
   translations  productTranslations[]
 
@@ -77,6 +72,21 @@ model Product {
 
   WishList   WishList[] @relation(fields: [wishListId], references: [id])
   wishListId String[]   @db.ObjectId
+
+  Specification Specification[]
+}
+
+model Specification {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  color    String
+  size    String
+  curve    String
+  thickness String
+  supply    Int
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?  @unique @db.ObjectId
 }
 
 model productTranslations {
