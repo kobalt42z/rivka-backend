@@ -100,7 +100,7 @@ export class ProductsService {
         skip: _skip * 10 || 0,
         include: {
           translations: true,
-          categorys: { select: { name: true } }
+          categorys: { select: { name: true }, }
         }
 
       });

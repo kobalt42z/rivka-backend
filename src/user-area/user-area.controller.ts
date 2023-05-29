@@ -37,20 +37,12 @@ export class UserAreaController {
 
     @Get('myOrders')
     findeMyOrders(@GetPayload() payload: userTokenPayload) {
-        console.log(payload.sub);
-
-        return this.ordersService.findMyOrders(payload.sub)
+        return this.ordersService.findMyOrders(payload)
     }
 
     @Get('myWishList')
     findeMyWishList(@GetPayload() payload: userTokenPayload) {
-
-
-        return this.wishListService.myWishList(payload.sub)
+        return this.wishListService.myWishList(payload)
     }
 
-    // @Post('selfOrder')
-    // selfOrder(@GetPayload() payload : userTokenPayload ,@Body() selfOrderDto:SelfOrderDto ){
-    //     return this.ordersService.selfOrder(payload.sub,selfOrderDto)
-    // }
 }

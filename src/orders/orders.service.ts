@@ -1,23 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
-
-import { UpdateOrderDto } from './dto/update-order.dto';
-import { connect } from 'http2';
 import { OrderStatus } from 'src/interfaces/Status.interface';
+import { userTokenPayload } from 'src/interfaces';
 
 @Injectable()
 export class OrdersService {
     constructor(private readonly prisma: PrismaService) { }
 
-    async createOrder(orderDto: CreateOrderDto) {
+    async createOrder(orderDto: CreateOrderDto, decodedToken: userTokenPayload) {
         try {
 
             const order = await this.prisma.order.create({
                 data: {
                     user: {
                         connect: {
-                            id: orderDto.user
+                            id: decodedToken.sub
                         },
                     },
                     cartProducts: {
@@ -25,14 +23,12 @@ export class OrdersService {
                             data: orderDto.productsInCart
                         },
                     },
-                    
-
                 }
             })
-
+            return order
 
         } catch (error) {
-
+            throw error
         }
     }
 
@@ -44,9 +40,7 @@ export class OrdersService {
                 },
                 data: {
                     status: status,
-                    
                 },
-                
             });
             return order
         } catch (error) {
@@ -61,7 +55,6 @@ export class OrdersService {
                     cartProducts: { include: { product: true } },
                     user: true,
                 }
-                
             });
             return orders;
         } catch (error) {
@@ -71,11 +64,11 @@ export class OrdersService {
 
 
 
-    async findMyOrders(_id: string) {
+    async findMyOrders(decodedToken:userTokenPayload) {
         try {
             const orders = await this.prisma.order.findMany({
                 where: {
-                    userId: _id
+                    userId: decodedToken.sub
                 },
                 include: {
                     cartProducts: { include: { product: true } },
@@ -87,11 +80,11 @@ export class OrdersService {
         }
     }
 
-    async remove(_id: string) {
+    async remove(orderId: string) {
         const remouvedOrder = await this.prisma.order.delete({
-            where: { id: _id },
+            where: { id: orderId },
         })
-        return { action_status: `the #${_id} order was remouved from data base`, remouvedOrder };
+        return { action_status: `the #${orderId} order was remouved from data base`, remouvedOrder };
     }
 
 

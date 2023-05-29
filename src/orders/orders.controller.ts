@@ -15,8 +15,8 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) { }
 
   @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.createOrder(createOrderDto);
+  create(@Body() createOrderDto: CreateOrderDto, @GetPayload() payload:userTokenPayload) {
+    return this.ordersService.createOrder(createOrderDto,payload);
   }
 
 

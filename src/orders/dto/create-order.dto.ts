@@ -4,10 +4,6 @@ import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Mi
 export class CreateOrderDto {
 
     @IsNotEmpty()
-    @MaxLength(50)
-    user: string;
-
-    @IsNotEmpty()
     @IsArray()
     @ValidateNested()
     @Type(() => productInCartDto)

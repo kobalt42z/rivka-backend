@@ -14,11 +14,11 @@ export class WishListController {
 
   @Patch(':productId')
   Like(@Param("productId") productId: string, @GetPayload() payload: userTokenPayload) {
-    return this.wishListService.LikeProduct(productId, payload.sub);
+    return this.wishListService.LikeProduct(productId, payload);
   }
   @Delete(':productId')
   DisLike(@Param("productId") productId: string, @GetPayload() payload: userTokenPayload) {
-    return this.wishListService.dislikeProduct(productId, payload.sub);
+    return this.wishListService.dislikeProduct(productId, payload);
   }
 
 }

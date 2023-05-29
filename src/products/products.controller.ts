@@ -17,18 +17,6 @@ import { VALIDATION_CONFIG } from '../GlobalConst';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
 
-
-  // @Post()
-  // createOneOrMany(
-  //   @Body(new ParseArrayPipe({items:CreateProductDto})) 
-  //   createProductDtos: CreateProductDto[]) {
-  //   return this.productsService.createOneOrMany(createProductDtos);
-  // }
-
-  // new ProductReqValidator({
-  //   maxImageSize: 1 * 1000 * 1000,
-  //   allowedImageTypes: ['image/png', 'image/jpeg']
-  // })
   @UseGuards(JwtGuard, RolesGuard)
   @OnlyRole(Roles.ADMIN)
   @Post()
@@ -45,23 +33,18 @@ export class ProductsController {
     @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) body: CreateProductDto) {
     console.log({ body, file });
     return this.productsService.createAndConnect(body, file);
-
-
-    // return { body, file }
-
   }
-
-
 
   @Get()
   findAll(@Query('page') page: number) {
-
     return this.productsService.findAll(page);
   }
+
   @Get('slist')
   getSlist() {
     return this.productsService.getSlist();
   }
+
   @Get('shopCount')
   getShopCount() {
     return this.productsService.getShopCount();

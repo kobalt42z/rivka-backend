@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateWishListDto } from './dto/create-wish-list.dto';
 import { UpdateWishListDto } from './dto/update-wish-list.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { userTokenPayload } from 'src/interfaces';
 
 @Injectable()
 export class WishListService {
@@ -9,11 +10,11 @@ export class WishListService {
 
   // if its alredy liked its dislike it automaticly 
 
-  async LikeProduct(productId: string, _userId: string) {
+  async LikeProduct(productId: string, decodedToken: userTokenPayload) {
     try {
       const resp = await this.prisma.wishList.upsert({
         where: {
-          userId: _userId
+          userId: decodedToken.sub
         },
         create: {
           products: {
@@ -22,7 +23,7 @@ export class WishListService {
             },
           },
           user: {
-            connect: { id: _userId }
+            connect: { id: decodedToken.sub }
           }
         },
         update: {
@@ -38,11 +39,11 @@ export class WishListService {
     }
   }
 
-  async dislikeProduct(productId: string, _userId: string) {
+  async dislikeProduct(productId: string, { sub }: userTokenPayload) {
     try {
       const resp = await this.prisma.wishList.update({
         where: {
-          userId: _userId
+          userId: sub
         },
         data: {
           products: { disconnect: { id: productId } }
@@ -56,10 +57,10 @@ export class WishListService {
   }
 
 
-  async myWishList(userId: string) {
+  async myWishList({ sub }: userTokenPayload) {
     try {
       const resp = await this.prisma.wishList.findMany({
-        where: { userId },
+        where: { userId: sub },
         include: { products: true }
       })
       return resp
@@ -68,15 +69,5 @@ export class WishListService {
     }
   }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} wishList`;
-  // }
 
-  // update(id: number, updateWishListDto: UpdateWishListDto) {
-  //   return `This action updates a #${id} wishList`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} wishList`;
-  // }
 }
