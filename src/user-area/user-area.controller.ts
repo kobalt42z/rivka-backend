@@ -13,9 +13,9 @@ import { OrdersService } from 'src/orders/orders.service';
 import { WishListService } from 'src/wish-list/wish-list.service';
 import { CreateUserDto } from 'src/users-managment/dto/create-user.dto';
 import {  DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
+import { FbAuthGuard } from 'src/Auth/guards/fb-auth/fb-auth.guard';
 
-@UseGuards(JwtGuard, RolesGuard)
-@OnlyRole(Roles.USER)
+@UseGuards(FbAuthGuard)
 @UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('userArea')
 export class UserAreaController {
@@ -29,7 +29,7 @@ export class UserAreaController {
     registeration(@Body() body: CreateUserDto, @GetPayload() tokenPayload :userTokenPayload) {
         return this.userAreaService.register(body, tokenPayload)
     }
-
+ 
     @Get('myInfo')
     getMyInfo(@GetPayload() tokenPayload :userTokenPayload) {
         return this.userAreaService.getMyInfo(tokenPayload);
@@ -39,7 +39,7 @@ export class UserAreaController {
     findeMyOrders(@GetPayload() payload: userTokenPayload) {
         return this.ordersService.findMyOrders(payload)
     }
-
+ 
     @Get('myWishList')
     findeMyWishList(@GetPayload() payload: userTokenPayload) {
         return this.wishListService.myWishList(payload)

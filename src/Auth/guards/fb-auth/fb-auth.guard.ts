@@ -10,22 +10,28 @@ export class FbAuthGuard implements CanActivate {
 
   private extractTokenFromHeader(request: any): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
+
     return type === 'Bearer' ? token : undefined;
   }
 
   async canActivate(
     context: ExecutionContext,
   ): Promise<boolean> {
+
     const req = context.switchToHttp().getRequest();
+
+
     const token = this.extractTokenFromHeader(req)
+
     if (!token) return false
     try {
       const decodedToken = await auth().verifyIdToken(token);
       req['user'] = decodedToken
     } catch (error) {
+
+
       throw new UnauthorizedException();
     }
-
     return true;
   }
 }

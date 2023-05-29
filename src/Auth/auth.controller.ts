@@ -15,11 +15,11 @@ import { FbAuthGuard } from './guards/fb-auth/fb-auth.guard';
 export class AuthController {
     constructor(private readonly authservices: AuthService) { }
 
-    
-// !not tested yet 
+
+    // !not tested yet 
     @UseGuards(FbAuthGuard)
-    @Get("testAuth")
-    FBValidation(@Req() req:any) {
-        return this.authservices.isRegistred(req.user)
+    @Get()
+    FBValidation(@GetPayload() decodedToken: userTokenPayload) {
+        return this.authservices.isRegistred(decodedToken)
     }
 }

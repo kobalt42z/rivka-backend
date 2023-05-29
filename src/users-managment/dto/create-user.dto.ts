@@ -42,7 +42,7 @@ export class CreateUserDto {
 
     @IsNotEmpty()
     @IsString()
-    @MaxLength(10)
+    @MaxLength(30)
     fullName: string;
 
 
@@ -71,8 +71,8 @@ export class CreateUserDto {
     @IsString()
     selectedLanguage: string;
 
-    @ValidateNested()
     @IsNotEmpty()
+    @ValidateNested()
     @Type(() => AddressDto)
     address: AddressDto;
 }

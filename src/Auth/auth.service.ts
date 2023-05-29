@@ -23,6 +23,8 @@ export class AuthService {
     // check if uid exist in db and validate the token 
     async isRegistred(decodedToken :DecodedIdToken) {
         try {
+            console.log(decodedToken);
+            
             const resp = await this.prisma.user.findUniqueOrThrow({ where: { uid: decodedToken.sub } })
             return resp
         } catch (error) {
