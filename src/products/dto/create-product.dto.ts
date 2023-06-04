@@ -99,6 +99,7 @@ export class CreateProductDto {
     @Type(() => SpecificationsDto)
     specifications: SpecificationsDto[]
 
+    @IsNotEmpty()
     @IsArray()
     categoryIds: string[]
 

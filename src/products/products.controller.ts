@@ -16,9 +16,9 @@ import { VALIDATION_CONFIG } from '../GlobalConst';
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
-
-  @UseGuards(JwtGuard, RolesGuard)
-  @OnlyRole(Roles.ADMIN)
+//!!!!!!
+  // @UseGuards(JwtGuard, RolesGuard)
+  // @OnlyRole(Roles.ADMIN)
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'image', maxCount: 1 },
