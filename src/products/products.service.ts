@@ -27,14 +27,6 @@ export class ProductsService {
       const imgURL = await this.aws.uploadToS3(file, 'products')
       const categories = categoryIds.map((id) => ({ id }));
 
-      const translatArr = [
-        {
-          ...translations.fr
-        },
-        {
-          ...translations.en
-        },
-      ];
 
       const product = await this.prisma.product.create({
         data: {
@@ -43,7 +35,7 @@ export class ProductsService {
             connect: categories
           },
           translations: {
-            create: translatArr
+            create: translations
           },
           Specification: {
             createMany: {
@@ -185,10 +177,10 @@ export class ProductsService {
       if (updateProductDto.categoryIds) {
         categories = updateProductDto.categoryIds.map((id) => ({ id }));
       }
-      const transArr = [
-        updateProductDto?.translations?.fr,
-        updateProductDto?.translations?.en,
-      ]
+      // const transArr = [
+      //   updateProductDto?.translations?.fr,
+      //   updateProductDto?.translations?.en,
+      // ]
 
       const updatedProduct = await this.prisma.product.update({
         where: { id: _id }, //TODO ToCheck

@@ -106,8 +106,9 @@ export class CreateProductDto {
 
     @ValidateNested()
     @IsNotEmpty()
-    @Type(() => TranslationDto)
-    translations: TranslationDto
+    @IsArray()
+    @Type(() => LangueDto)
+    translations: LangueDto[]
 
     @IsNotEmpty()
     active: boolean

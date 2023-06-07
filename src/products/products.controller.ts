@@ -90,8 +90,8 @@ export class ProductsController {
   }
 
 
-  @UseGuards(JwtGuard, RolesGuard)
-  @OnlyRole(Roles.ADMIN)
+  // @UseGuards(JwtGuard, RolesGuard)
+  // @OnlyRole(Roles.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.productsService.remove(id);
