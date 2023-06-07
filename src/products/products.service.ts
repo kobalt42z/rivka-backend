@@ -22,23 +22,23 @@ export class ProductsService {
     private readonly config: ConfigService
   ) { }
 
-  async createAndConnect(createProductDto: CreateProductDto, file: Express.Multer.File) {
+  async createAndConnect({ categoryIds, translations, Specifications, ...rest }: CreateProductDto, file: Express.Multer.File) {
     try {
       const imgURL = await this.aws.uploadToS3(file, 'products')
-      const categories = createProductDto.categoryIds.map((id) => ({ id }));
+      const categories = categoryIds.map((id) => ({ id }));
 
       const translatArr = [
         {
-          ...createProductDto.translations.fr
+          ...translations.fr
         },
         {
-          ...createProductDto.translations.en
+          ...translations.en
         },
       ];
 
       const product = await this.prisma.product.create({
         data: {
-          ...createProductDto, imgUrl: imgURL,
+          ...rest, imgUrl: imgURL,
           categorys: {
             connect: categories
           },
@@ -47,7 +47,7 @@ export class ProductsService {
           },
           Specification: {
             createMany: {
-              data: createProductDto.specifications
+              data: Specifications
             }
           }
         }
@@ -61,7 +61,7 @@ export class ProductsService {
   }
 
 
-// ?for shop 
+  // ?for shop 
   // test if we get the basic product in addition to spec 
   async findAllInCategory(categoryName: string) {
     try {
@@ -88,7 +88,7 @@ export class ProductsService {
     }
   }
 
-  
+
   // test if we get the basic product in addition to spec 
   async findAllWithProducts(skipProducts: number, skipCategories: number) {
     try {
@@ -124,7 +124,8 @@ export class ProductsService {
         skip: _skip * 10 || 0,
         include: {
           translations: true,
-          categorys: { select: { name: true }, }
+          categorys: { select: { name: true }, },
+          Specification: true,
         }
 
       });
