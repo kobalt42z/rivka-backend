@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { STSClient, AssumeRoleCommand, AssumeRoleCommandInput } from "@aws-sdk/client-sts";
 import { S3Client, AbortMultipartUploadCommand, PutObjectCommand, PutObjectCommandInput, DeleteObjectCommand, DeleteObjectCommandInput } from "@aws-sdk/client-s3";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'; 
 @Injectable()
 export class AwsService {
     constructor(private Config: ConfigService) { }

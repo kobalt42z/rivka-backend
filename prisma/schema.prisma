@@ -91,7 +91,7 @@ model Specification {
 
 model productTranslations {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  language    String
+  language    String?
   name        String?
   description String?
   Product     Product? @relation(fields: [productId], references: [id], onDelete: Cascade)

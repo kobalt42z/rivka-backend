@@ -26,8 +26,8 @@ export class ProductsController {
   ]))
   createAndConnect(
     @UploadedFiles(new ImgAndJsonValidator({
-      allowedImageTypes: ['image/png', 'image/jpg'],
-      maxImageSize: 16 * 1000 * 1000
+      allowedImageTypes: ['image/png', 'image/jpg','image/jpeg'],
+      maxImageSize: 16 * 1000 * 1000 *1000
     }))
     file: Express.Multer.File,
     @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) body: CreateProductDto) {

@@ -97,7 +97,7 @@ export class CreateProductDto {
     @IsNotEmpty()
     @ValidateNested()
     @Type(() => SpecificationsDto)
-    specifications: SpecificationsDto[]
+    Specifications: SpecificationsDto[]
 
     @IsNotEmpty()
     @IsArray()
