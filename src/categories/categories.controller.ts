@@ -17,14 +17,14 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) { }
 
 
-  @UseGuards(JwtGuard, RolesGuard)
-  @OnlyRole(Roles.ADMIN)
+  // @UseGuards(JwtGuard, RolesGuard)
+  // @OnlyRole(Roles.ADMIN)
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'image', maxCount: 1 }
   ]))
   create(@UploadedFiles(new ImgAndJsonValidator({
-    allowedImageTypes:['image/jpg', 'image/png'],
+    allowedImageTypes:['image/jpg', 'image/jpeg','image/png'],
     maxImageSize:16*1000*1000
   })) file:Express.Multer.File ,
    @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) createCategoryDto: CreateCategoryDto) {

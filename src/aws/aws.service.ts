@@ -56,8 +56,8 @@ export class AwsService {
 
             const imgURL: string = this.Config.get("BASE_BUCKET_URL") + path
             return imgURL;
-        } catch (error) {
-            throw error;
+        } catch (error) { 
+            throw error;    
         }
     }
 

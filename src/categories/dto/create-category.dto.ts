@@ -10,11 +10,6 @@ export class CreateCategoryDto {
     @IsString()
     @MaxLength(50)
     description: string;
-    
-    @IsUrl()
-    @MaxLength(300)
-    @IsOptional()
-    imgUrl:string;
-    
+
 
 }

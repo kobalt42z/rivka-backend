@@ -1,65 +1,130 @@
 [
     {
-        "name": "creme pieds",
-        "brand": "nivea",
-        "description": "une creme redoutable pour les pieds",
-        "ShortDescription": "creme redoutable pieds",
-        "price_ils": 65,
-        "reduction_p": 0,
-        "supply": 40
-    },
-    {
-        "name": "cremea pieds",
-        "brand": "nivea",
-        "description": "une creme redoutable pour les pieds",
-        "ShortDescription": "creme redoutable pieds",
-        "price_ils": 65,
-        "reduction_p": 0,
-        "supply": 40,
-        "dictionairey": {
-            "hebrue": {
-                "name": "x"
-            },
-            "francais": {
-                "name": "x"
-            }
-        }
-    },
-    {
-        "name&Description": {
-            "fr": {
-                "name": "crem"
-            },
-            "he": {
-                "na"
-            }
-        }
-        "name": "cremeaa pieds",
-        "brand": "nivea",
-        "description": "une creme redoutable pour les pieds",
-        "ShortDescription": "creme redoutable pieds",
-        "price_ils": 65,
-        "reduction_p": 0,
-        "supply": 40,
-        "colors": [
+        "name": "Product 1",
+        "brand": "Brand 1",
+        "description": "Product 1 description",
+        "base_price": 50,
+        "selling_price": 45,
+        "reduction_p": 10,
+        "Specifications": [
             {
-                "code": "#ffff",
-                "supply": 56
-            },
-            {
-                "code": "#gggg",
-                "supply": 56
+                "color": "Red",
+                "size": "L",
+                "curve": "Cu",
+                "thickness": "Th",
+                "supply": 100
             }
         ],
-        "size":[
+        "categoryIds": ["646ba62e4bf2d430be37d5e1"],
+        "translations": [
             {
-                "size": "xl",
-                "supply": 56
+                "language": "fr",
+                "name": "Produit 1",
+                "description": "Description du produit 1"
             },
             {
-                "size": "xxl",
-                "supply": 56
+                "language": "en",
+                "name": "Product 1",
+                "description": "Product 1 description"
             }
-        ]
+        ],
+        "active": true
+    },
+    {
+        "name": "Product 2",
+        "brand": "Brand 2",
+        "description": "Product 2 description",
+        "base_price": 80,
+        "selling_price": 75,
+        "reduction_p": 5,
+        "Specifications": [
+            {
+                "color": "Blue",
+                "size": "M",
+                "curve": "St",
+                "thickness": "Th",
+                "supply": 50
+            }
+        ],
+        "categoryIds": [
+            "646ba62e4bf2d430be37d5e1"
+        ],
+        "translations": [
+            {
+                "language": "fr",
+                "name": "Produit 2",
+                "description": "Description du produit 2"
+            },
+            {
+                "language": "en",
+                "name": "Product 2",
+                "description": "Product 2 description"
+            }
+        ],
+        "active": true
+    },
+    {
+        "name": "Product 3",
+        "brand": "Brand 3",
+        "description": "Product 3 description",
+        "base_price": 100,
+        "selling_price": 90,
+        "reduction_p": 10,
+        "Specifications": [
+            {
+                "color": "Green",
+                "size": "S",
+                "curve": "Cu",
+                "thickness": "Me",
+                "supply": 200
+            }
+        ],
+        "categoryIds": [
+            "646ba62e4bf2d430be37d5e1"
+        ],
+        "translations": [
+            {
+                "language": "fr",
+                "name": "Produit 3",
+                "description": "Description du produit 3"
+            },
+            {
+                "language": "en",
+                "name": "Product 3",
+                "description": "Product 3 description"
+            }
+        ],
+        "active": true
+    },
+    {
+        "name": "Product 4",
+        "brand": "Brand 4",
+        "description": "Product 4 description",
+        "base_price": 75,
+        "selling_price": 70,
+        "reduction_p": 7,
+        "Specifications": [
+            {
+                "color": "Yellow",
+                "size": "L",
+                "curve": "St",
+                "thickness": "Th",
+                "supply": 150
+            }
+        ],
+        "categoryIds": ["646ba62e4bf2d430be37d5e1"],
+        "translations": [
+            {
+                "language": "fr",
+                "name": "Produit 4",
+                "description": "Description du produit 4"
+            },
+            {
+                "language": "en",
+                "name": "Product 4",
+                "description": "Product 4 description"
+            }
+        ],
+        "active": true
     }
 ]

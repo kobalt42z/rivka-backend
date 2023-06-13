@@ -16,9 +16,9 @@ import { VALIDATION_CONFIG } from '../GlobalConst';
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
-//!!!!!!
-  // @UseGuards(JwtGuard, RolesGuard)
+  //!!!!!!
   // @OnlyRole(Roles.ADMIN)
+  // @UseGuards(JwtGuard, RolesGuard)
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'image', maxCount: 1 },
@@ -26,8 +26,8 @@ export class ProductsController {
   ]))
   createAndConnect(
     @UploadedFiles(new ImgAndJsonValidator({
-      allowedImageTypes: ['image/png', 'image/jpg','image/jpeg'],
-      maxImageSize: 16 * 1000 * 1000 *1000
+      allowedImageTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+      maxImageSize: 16 * 1000 * 1000 * 1000
     }))
     file: Express.Multer.File,
     @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) body: CreateProductDto) {
@@ -82,14 +82,10 @@ export class ProductsController {
       imageOptional: true
     })
   ) file: Express.Multer.File, @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) updateProductDto: UpdateProductDto) {
-
     id = id.replace('', '')
-
     return this.productsService.update(id, updateProductDto, file);
     // return { id, updateProductDto ,file}  
   }
-
-
   // @UseGuards(JwtGuard, RolesGuard)
   // @OnlyRole(Roles.ADMIN)
   @Delete(':id')
