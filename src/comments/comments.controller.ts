@@ -5,7 +5,8 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { GetPayload, OnlyRole } from 'src/decorators';
 import { JwtGuard, RolesGuard } from 'src/Auth/guards';
 import { Roles, userTokenPayload } from 'src/interfaces';
-@UseGuards(JwtGuard, RolesGuard)
+import { FbAuthGuard } from 'src/Auth/guards/fb-auth/fb-auth.guard'; 
+@UseGuards(FbAuthGuard, RolesGuard)
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) { }

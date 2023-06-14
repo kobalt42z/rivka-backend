@@ -17,6 +17,7 @@ export class FbAuthGuard implements CanActivate {
   async canActivate(
     context: ExecutionContext,
   ): Promise<boolean> {
+console.log("fbAUth proc");
 
     const req = context.switchToHttp().getRequest();
 
