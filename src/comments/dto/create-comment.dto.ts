@@ -2,10 +2,10 @@ import { IsAlpha, IsNotEmpty, IsNumber, MaxLength, Min  ,Max} from "class-valida
 
 export class CreateCommentDto {
 
-    @IsNotEmpty()
-    @IsAlpha("he")
-    @MaxLength(30)
-    title: string
+    // @IsNotEmpty()
+    // @IsAlpha("he")
+    // @MaxLength(30)
+    // title: string
 
 
     @IsNotEmpty()

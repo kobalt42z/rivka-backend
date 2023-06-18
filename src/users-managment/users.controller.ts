@@ -9,8 +9,8 @@ import { AuthService } from '../Auth/auth.service';
 import { ChangeRoleDto } from './dto/change-role.dto';
 import { VALIDATION_CONFIG } from '../GlobalConst';
 
-@UseGuards(JwtGuard, RolesGuard)
-@OnlyRole(Roles.ADMIN)
+// @UseGuards(JwtGuard, RolesGuard)
+// @OnlyRole(Roles.ADMIN) //! debug!!!!!!
 @UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('users')
 export class UsersController {
