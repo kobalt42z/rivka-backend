@@ -15,8 +15,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  uid              String @unique
+  uid              String  @unique
   authProviderName String
+  imgUrl           String?
 
   fullName         String
   dateOfBirth      DateTime?
@@ -79,9 +80,9 @@ model Product {
 model Specification {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  color    String
-  size    String
-  curve    String
+  color     String
+  size      String
+  curve     String
   thickness String
   supply    Int
 
@@ -152,7 +153,6 @@ model Comment {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String  @unique @db.ObjectId
 
-  title  String
   body   String
   rating Int
 }

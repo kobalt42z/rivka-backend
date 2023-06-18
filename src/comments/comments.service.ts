@@ -15,7 +15,7 @@ export class CommentsService {
           ...createCommentDto,
           user: {
             connect: {
-              id: userId
+              uid: userId
             }
           },
           product: {
