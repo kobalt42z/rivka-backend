@@ -9,6 +9,8 @@ export class RolesGuard implements CanActivate {
 
 
   canActivate(context: ExecutionContext): boolean {
+    console.log('proc');
+    
     // this is retrive the metadata role atached to the particular route
     const requiredRoles = this.reflector.get<string[]>('roles', context.getHandler())
     if (!requiredRoles) return true;
@@ -18,6 +20,9 @@ export class RolesGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
     if (!req.user) return false;
     const decodedToken:userTokenPayload = req.user;
+    console.log(decodedToken.role);
+    if(decodedToken.role === Roles.ADMIN)return true;
+    
     if (requiredRoles.includes(decodedToken.role)) return true;
     else return false;
     
