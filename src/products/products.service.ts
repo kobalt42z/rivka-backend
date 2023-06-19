@@ -128,26 +128,33 @@ export class ProductsService {
     }
   }
 
-  async findOne(_id: string) {
+  async findOne(_id: string, comment?: number) {
+    const perPage = 10;
     try {
       const product = await this.prisma.product.findUniqueOrThrow({
         where: { id: _id }, include: {
           _count: { select: { Comment: true, WishList: true } },
           translations: true,
           Comment: {
-
+            take: perPage,
+            skip: perPage * (comment ?? 0),
             include: {
               user: {
                 select: {
 
                   fullName: true, imgUrl: true,
-
                 }
               }
             }
           },
           Specification: true,
-
+          categorys: {
+            select: {
+              name: true, products: {
+                take: 10
+              }
+            }
+          }
 
         }
       });
