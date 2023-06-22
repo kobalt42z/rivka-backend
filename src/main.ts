@@ -21,13 +21,15 @@ async function bootstrap() {
 
   // MakeFirstAdmin("wkKXuQsJrBWnWvikSzUorAaYFza2") //? activate me for binde first admin
   
-  // app.useGlobalPipes(new ValidationPipe({
-  //   whitelist:true, 
-  //   enableDebugMessages:true,
-  //   forbidNonWhitelisted:true, //thorow error when not whitelisted value 
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist:true, 
+    enableDebugMessages:true,
+    forbidNonWhitelisted:true, //thorow error when not whitelisted value 
+    transform:true,
+    validateCustomDecorators:false, //
 
-  // })
-  // );
+  })
+  );
 
 
 

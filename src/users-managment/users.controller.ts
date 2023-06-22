@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, ValidationPipe,  } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,7 +11,6 @@ import { VALIDATION_CONFIG } from '../GlobalConst';
 
 // @UseGuards(JwtGuard, RolesGuard)
 // @OnlyRole(Roles.ADMIN) //! debug!!!!!!
-@UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService, private readonly authServices: AuthService) { }

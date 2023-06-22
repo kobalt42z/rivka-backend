@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Post, Body, ValidationPipe, UsePipes, Req } from '@nestjs/common';
+import { Controller, Get, UseGuards, Post, Body, ValidationPipe, Req } from '@nestjs/common';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { AuthGuard } from '@nestjs/passport';
 import { GetPayload, OnlyRole } from '../decorators';
@@ -16,7 +16,6 @@ import {  DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { FbAuthGuard } from 'src/Auth/guards/fb-auth/fb-auth.guard';
 
 @UseGuards(FbAuthGuard)
-@UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('userArea')
 export class UserAreaController {
     constructor(

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ValidationPipe,  } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -9,7 +9,6 @@ import { VALIDATION_CONFIG } from '../GlobalConst';
 import { setStatusDto } from './dto/set-status.dto';
 
 @UseGuards(JwtGuard, RolesGuard)
-@UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) { }

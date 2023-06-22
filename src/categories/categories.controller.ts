@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UsePipes, ValidationPipe, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ValidationPipe, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -10,8 +10,8 @@ import { VALIDATION_CONFIG } from '../GlobalConst';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ImgAndJsonValidator } from 'src/products/pipes/ProductData.pipe';
 import { parseJsonPipe } from 'src/products/pipes/ParseJson.pipe';
+import { FormBody } from 'src/decorators/formBody.decorator';
 
-// @UsePipes(new ValidationPipe(VALIDATION_CONFIG))
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) { }
@@ -27,7 +27,7 @@ export class CategoriesController {
     allowedImageTypes:['image/jpg', 'image/jpeg','image/png'],
     maxImageSize:16*1000*1000
   })) file:Express.Multer.File ,
-   @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) createCategoryDto: CreateCategoryDto) {
+   @FormBody() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(file,createCategoryDto);
     
   }

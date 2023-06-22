@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseArrayPipe, UseGuards, Query, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, UsePipes, UploadedFiles, ValidationPipe, ParseFloatPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseArrayPipe, UseGuards, Query, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, UploadedFiles, ValidationPipe, ParseFloatPipe } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -11,6 +11,7 @@ import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express
 import { ImgAndJsonValidator } from './pipes/ProductData.pipe';
 import { parseJsonPipe } from './pipes/ParseJson.pipe';
 import { VALIDATION_CONFIG } from '../GlobalConst';
+import { FormBody } from 'src/decorators/formBody.decorator';
 
 
 @Controller('products')
@@ -30,7 +31,7 @@ export class ProductsController {
       maxImageSize: 16 * 1000 * 1000 * 1000
     }))
     file: Express.Multer.File,
-    @Body(new parseJsonPipe(), new ValidationPipe(VALIDATION_CONFIG)) body: CreateProductDto) {
+    @FormBody() body: CreateProductDto) {
     console.log({ body, file });
     return this.productsService.createAndConnect(body, file);
   }

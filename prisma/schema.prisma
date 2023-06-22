@@ -80,10 +80,10 @@ model Product {
 model Specification {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  color     String
-  size      String
-  curve     String
-  thickness String
+  color     String?
+  size      String?
+  curve     String?
+  thickness String?
   supply    Int
 
   product   Product? @relation(fields: [productId], references: [id])
