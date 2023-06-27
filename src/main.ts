@@ -40,6 +40,7 @@ async function bootstrap() {
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter, {
     P2023: HttpStatus.BAD_REQUEST
   }))
+  
   app.enableCors({
     origin: '*',
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",

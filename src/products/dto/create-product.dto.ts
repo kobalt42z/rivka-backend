@@ -21,6 +21,11 @@ export class SpecificationsDto {
     @IsString()
     @MaxLength(10)
     thickness: string
+    
+    @IsOptional()
+    @IsString()
+    @MaxLength(10)
+    length: string
 
     @IsNotEmpty()
     @IsNumber()

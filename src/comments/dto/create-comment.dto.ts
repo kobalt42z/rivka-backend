@@ -1,4 +1,4 @@
-import { IsAlpha, IsNotEmpty, IsNumber, MaxLength, Min  ,Max} from "class-validator"
+import { IsAlpha, IsNotEmpty, IsNumber, MaxLength, Min  ,Max, IsAlphanumeric} from "class-validator"
 
 export class CreateCommentDto {
 
@@ -9,7 +9,6 @@ export class CreateCommentDto {
 
 
     @IsNotEmpty()
-    @IsAlpha("he")
     @MaxLength(200)
     body: string
 
