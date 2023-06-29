@@ -1,0 +1,12 @@
+{
+    "productsInCart": [
+        {
+            "count": 3,
+            "specificationId":"64870fdfa39bd177a2f3945a"
+        },
+        {
+            "count": 6,
+            "specificationId":"64870ff9a39bd177a2f3945e"
+        }
+    ]
+}

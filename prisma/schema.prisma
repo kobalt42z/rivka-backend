@@ -69,8 +69,6 @@ model Product {
   categorys   Category[] @relation(fields: [categoryIds], references: [id])
   categoryIds String[]   @db.ObjectId
 
-  ProductInCart ProductInCart?
-
   WishList   WishList[] @relation(fields: [wishListId], references: [id])
   wishListId String[]   @db.ObjectId
 
@@ -89,6 +87,8 @@ model Specification {
 
   product   Product? @relation(fields: [productId], references: [id])
   productId String?  @unique @db.ObjectId
+
+  ProductInCart ProductInCart ?
 }
 
 model productTranslations {
@@ -130,15 +130,11 @@ model Order {
 }
 
 model ProductInCart {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  product   Product @relation(fields: [productId], references: [id])
-  productId String  @unique @db.ObjectId
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  count Int    @default(0)
 
-  count     Int
-  color     String?
-  sizes     String?
-  curves    String?
-  thickness String?
+  specification   Specification @relation(fields: [specificationId], references: [id])
+  specificationId String        @unique @db.ObjectId
 
   Order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId String @db.ObjectId

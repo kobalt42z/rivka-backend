@@ -19,9 +19,10 @@ export class OrdersService {
                         },
                     },
                     cartProducts: {
-                        createMany: {
-                            data: orderDto.productsInCart
-                        },
+                        createMany:{
+                            data:orderDto.productsInCart
+                        }
+
                     },
                 }
             })
@@ -52,7 +53,7 @@ export class OrdersService {
         try {
             const orders = await this.prisma.order.findMany({
                 include: {
-                    cartProducts: { include: { product: true } },
+                    cartProducts: {  },
                     user: true,
                 }
             });
@@ -64,14 +65,14 @@ export class OrdersService {
 
 
 
-    async findMyOrders(decodedToken:userTokenPayload) {
+    async findMyOrders(decodedToken: userTokenPayload) {
         try {
             const orders = await this.prisma.order.findMany({
                 where: {
                     userId: decodedToken.sub
                 },
                 include: {
-                    cartProducts: { include: { product: true } },
+                    
                 }
             });
             return orders;

@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
 import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, ValidateNested, validate } from "class-validator";
+import { SpecificationsDto } from "src/products/dto/create-product.dto";
 
 export class CreateOrderDto {
 
@@ -9,13 +10,12 @@ export class CreateOrderDto {
     @Type(() => productInCartDto)
     productsInCart: productInCartDto[];
 
-    
+
 }
 
+
 export class productInCartDto {
-    @IsNotEmpty()
-    @IsString()
-    productId: string;
+
 
     @IsNotEmpty()
     @IsNumber()
@@ -23,23 +23,7 @@ export class productInCartDto {
     @Max(1000)
     count: number
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsString()
-    @MaxLength(10)
-    color?: string
-
-    @IsOptional()
-    @IsString()
-    @MaxLength(5)
-    sizes?: string
-
-    @IsOptional()
-    @IsString()
-    @MaxLength(5)
-    curves?: string
-
-    @IsOptional()
-    @IsString()
-    @MaxLength(5)
-    thickness?: string
+    specificationId: string
 }
