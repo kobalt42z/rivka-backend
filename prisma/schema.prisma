@@ -5,6 +5,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
@@ -88,7 +92,7 @@ model Specification {
   product   Product? @relation(fields: [productId], references: [id])
   productId String?  @unique @db.ObjectId
 
-  ProductInCart ProductInCart ?
+  ProductInCart ProductInCart?
 }
 
 model productTranslations {

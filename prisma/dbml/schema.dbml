@@ -1,0 +1,176 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  uid String [unique, not null]
+  authProviderName String [not null]
+  imgUrl String
+  fullName String [not null]
+  dateOfBirth DateTime
+  email String [unique, not null]
+  phone String [not null]
+  acceptEmail Boolean
+  selectedLanguage String
+  address Address [not null]
+  addressId String [unique, not null]
+  orders Order [not null]
+  Comment Comment [not null]
+  WishList WishList
+}
+
+Table Address {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  street String [not null]
+  stNum Int [not null]
+  entrance String
+  apartment Int [not null]
+  city String [not null]
+  postalCode String [not null]
+  User User
+}
+
+Table Product {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  name String [unique, not null]
+  brand String [not null]
+  description String [not null]
+  base_price Int [not null]
+  selling_price Int [not null]
+  reduction_p Int [default: 0]
+  supply Int
+  imgUrl String
+  active Boolean [not null]
+  translations productTranslations [not null]
+  Comment Comment [not null]
+  categorys Category [not null]
+  categoryIds String[] [not null]
+  WishList WishList [not null]
+  wishListId String[] [not null]
+  Specification Specification [not null]
+}
+
+Table Specification {
+  id String [pk]
+  color String
+  size String
+  curve String
+  thickness String
+  length String
+  supply Int [not null]
+  product Product
+  productId String [unique]
+  ProductInCart ProductInCart
+}
+
+Table productTranslations {
+  id String [pk]
+  language String
+  name String
+  description String
+  Product Product
+  productId String
+}
+
+Table Category {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  imgUrl String [not null]
+  name String [unique, not null]
+  description String [not null]
+  products Product [not null]
+  productsIds String[] [not null]
+}
+
+Table Order {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  user User [not null]
+  userId String [not null]
+  cartProducts ProductInCart [not null]
+  totalItems Int
+  totalPrice Int
+  status Status [not null, default: 'WAITING_FOR_PAYMENT']
+}
+
+Table ProductInCart {
+  id String [pk]
+  count Int [not null, default: 0]
+  specification Specification [not null]
+  specificationId String [unique, not null]
+  Order Order [not null]
+  orderId String [not null]
+}
+
+Table Comment {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  user User [not null]
+  userId String [unique, not null]
+  product Product [not null]
+  productId String [unique, not null]
+  body String [not null]
+  rating Int [not null]
+}
+
+Table WishList {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  user User [not null]
+  userId String [unique, not null]
+  products Product [not null]
+  productsIds String[] [unique, not null]
+}
+
+Enum Role {
+  USER
+  ADMIN
+  EMPLOYEE
+}
+
+Enum Status {
+  WAITING_FOR_PAYMENT
+  PAYED
+  WAITING_FOR_APROVEMENT
+  APROVED
+  WAITING_FOR_DELIVERY
+  IN_DELIVERY
+  ARIVED
+  ISSUE
+  IN_VERIFICATION
+}
+
+Ref: User.addressId - Address.id
+
+Ref: Product.categoryIds > Category.id
+
+Ref: Product.wishListId > WishList.id
+
+Ref: Specification.productId > Product.id
+
+Ref: productTranslations.productId > Product.id [delete: Cascade]
+
+Ref: Category.productsIds > Product.id
+
+Ref: Order.userId > User.id
+
+Ref: ProductInCart.specificationId - Specification.id
+
+Ref: ProductInCart.orderId > Order.id [delete: Cascade]
+
+Ref: Comment.userId > User.id
+
+Ref: Comment.productId > Product.id [delete: Cascade]
+
+Ref: WishList.userId - User.id
+
+Ref: WishList.productsIds > Product.id

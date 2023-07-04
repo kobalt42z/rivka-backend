@@ -7,8 +7,9 @@ import { GetPayload, OnlyRole } from '../decorators';
 import { Roles, userTokenPayload } from '../interfaces';
 import { VALIDATION_CONFIG } from '../GlobalConst';
 import { setStatusDto } from './dto/set-status.dto';
+import { FbAuthGuard } from 'src/Auth/guards/fb-auth/fb-auth.guard';
 
-@UseGuards(JwtGuard, RolesGuard)
+@UseGuards(FbAuthGuard, RolesGuard)
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) { }

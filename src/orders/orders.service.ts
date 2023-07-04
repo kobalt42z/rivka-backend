@@ -15,7 +15,7 @@ export class OrdersService {
                 data: {
                     user: {
                         connect: {
-                            id: decodedToken.sub
+                            uid: decodedToken.sub
                         },
                     },
                     cartProducts: {
