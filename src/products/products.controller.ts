@@ -57,9 +57,9 @@ export class ProductsController {
     return this.productsService.findAllWithProducts(pages, categoryTarget);
   }
 
-  @Get('byCategory/:categoryName')
-  findAllInCategory(@Param('categoryName') categoryName: string) {
-    return this.productsService.findAllInCategory(categoryName);
+  @Get('byCategory/:categoryId')
+  findAllInCategory(@Param('categoryId') categoryId: string) {
+    return this.productsService.findAllInCategory(categoryId);
   }
 
 

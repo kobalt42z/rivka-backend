@@ -11,14 +11,15 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ImgAndJsonValidator } from 'src/products/pipes/ProductData.pipe';
 import { parseJsonPipe } from 'src/products/pipes/ParseJson.pipe';
 import { FormBody } from 'src/decorators/formBody.decorator';
+import { FbAuthGuard } from 'src/Auth/guards/fb-auth/fb-auth.guard';
 
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) { }
 
 
-  // @UseGuards(JwtGuard, RolesGuard)
-  // @OnlyRole(Roles.ADMIN)
+  @UseGuards(FbAuthGuard, RolesGuard)
+  @OnlyRole(Roles.ADMIN)
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'image', maxCount: 1 }
@@ -54,7 +55,7 @@ export class CategoriesController {
   }
 
 
-  @UseGuards(JwtGuard, RolesGuard)
+  @UseGuards(FbAuthGuard, RolesGuard)
   @OnlyRole(Roles.ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
@@ -62,7 +63,7 @@ export class CategoriesController {
   }
 
 
-  @UseGuards(JwtGuard, RolesGuard)
+  @UseGuards(FbAuthGuard, RolesGuard)
   @OnlyRole(Roles.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {

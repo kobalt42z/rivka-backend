@@ -55,11 +55,11 @@ export class ProductsService {
 
   // ?for shop 
   // test if we get the basic product in addition to spec 
-  async findAllInCategory(categoryName: string) {
+  async findAllInCategory(categoryId: string) {
     try {
       const itemsInCategory = await this.prisma.category.findUniqueOrThrow({
         where: {
-          name: categoryName
+          id: categoryId
         },
         include: {
           products: {
