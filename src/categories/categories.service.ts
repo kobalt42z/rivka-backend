@@ -24,7 +24,7 @@ export class CategoriesService {
   async findAll() {
     try {
       const categories = await this.prisma.category.findMany({
-        include: { products: true }
+        include: { products: true,_count:{select:{products:true}} }
       });
       return { categories }
     } catch (error) {

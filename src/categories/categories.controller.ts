@@ -26,7 +26,7 @@ export class CategoriesController {
   ]))
   create(@UploadedFiles(new ImgAndJsonValidator({
     allowedImageTypes:['image/jpg', 'image/jpeg','image/png'],
-    maxImageSize:16*1000*1000
+    maxImageSize:16*1024*1024
   })) file:Express.Multer.File ,
    @FormBody() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(file,createCategoryDto);
